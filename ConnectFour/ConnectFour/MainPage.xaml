@@ -1,0 +1,208 @@
+﻿<Page
+    x:Class="ConnectFour.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ConnectFour"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel x:Name="MainBackground" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel x:Name="Options" Height="100" Orientation="Horizontal">
+            <ToggleSwitch x:Name="FirstPlayer" Header="First Player" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="100" OffContent="Computer" OnContent="Player" Width="200"/>
+            <ToggleSwitch x:Name="ComputerColor" Header="Computer Color" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200" Height="100" OffContent="Black" OnContent="Red"/>
+            <AppBarButton x:Name="Start" HorizontalAlignment="Stretch" Icon="Play" Label="Start" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="StartGame"/>
+            <AppBarButton x:Name="Reset" HorizontalAlignment="Stretch" Icon="Refresh" Label="Reset" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="reset" Margin="766,0,0,0"/>
+        </StackPanel>
+        <StackPanel x:Name="Labels" Height="30" Orientation="Horizontal" Visibility="Collapsed">
+            <TextBlock TextWrapping="Wrap" Text="A" Width="111" Height="30" FontSize="24" TextAlignment="Center" Margin="294,0,0,0"/>
+            <TextBlock TextWrapping="Wrap" Text="B" Width="111" Height="30" FontSize="24" TextAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Text="C" Width="111" Height="30" FontSize="24" TextAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Text="D" Width="111" Height="30" FontSize="24" TextAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Text="E" Width="111" Height="30" FontSize="24" TextAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Text="F" Width="111" Height="30" FontSize="24" TextAlignment="Center"/>
+            <TextBlock TextWrapping="Wrap" Text="G" Width="111" Height="30" FontSize="24" TextAlignment="Center"/>
+        </StackPanel>
+        <StackPanel x:Name="UserInput" Height="70" Orientation="Horizontal" Visibility="Collapsed">
+            <AppBarButton x:Name="ChooseA" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Margin="294,0,0,0" Tapped="playerInput" Tag="0">
+                <AppBarButton.RenderTransform>
+                    <CompositeTransform Rotation="180"/>
+                </AppBarButton.RenderTransform>
+            </AppBarButton>
+            <AppBarButton x:Name="ChooseB" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="1">
+                <AppBarButton.RenderTransform>
+                    <CompositeTransform Rotation="180"/>
+                </AppBarButton.RenderTransform>
+            </AppBarButton>
+            <AppBarButton x:Name="ChooseC" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="2">
+                <AppBarButton.RenderTransform>
+                    <CompositeTransform Rotation="180"/>
+                </AppBarButton.RenderTransform>
+            </AppBarButton>
+            <AppBarButton x:Name="ChooseD" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="3">
+                <AppBarButton.RenderTransform>
+                    <CompositeTransform Rotation="180"/>
+                </AppBarButton.RenderTransform>
+            </AppBarButton>
+            <AppBarButton x:Name="ChooseE" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="4">
+                <AppBarButton.RenderTransform>
+                    <CompositeTransform Rotation="180"/>
+                </AppBarButton.RenderTransform>
+            </AppBarButton>
+            <AppBarButton x:Name="ChooseF" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="5">
+                <AppBarButton.RenderTransform>
+                    <CompositeTransform Rotation="180"/>
+                </AppBarButton.RenderTransform>
+            </AppBarButton>
+            <AppBarButton x:Name="ChooseG" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="6">
+                <AppBarButton.RenderTransform>
+                    <CompositeTransform Rotation="180"/>
+                </AppBarButton.RenderTransform>
+            </AppBarButton>
+        </StackPanel>
+        <Canvas x:Name="Board" Margin="0,0,100,0" Width="1366" Height="668" Background="#FF4D4D41">
+            <StackPanel x:Name="YellowSquare" Background="#FFF0E84C" Height="666" Canvas.Left="294" ScrollViewer.VerticalScrollBarVisibility="Disabled" Width="777">
+                <StackPanel x:Name="Row6" Height="111" Margin="0" Orientation="Horizontal">
+                    <Border x:Name="A6" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="B6" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="C6" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="D6" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="E6" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="F6" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="G6" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel x:Name="Row5" Height="111" Margin="0" Orientation="Horizontal">
+                    <Border x:Name="A5" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="B5" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="C5" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="D5" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="E5" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="F5" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="G5" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel x:Name="Row4" Height="111" Margin="0" Orientation="Horizontal">
+                    <Border x:Name="A4" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="B4" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="C4" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="D4" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="E4" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="F4" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="G4" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel x:Name="Row3" Height="111" Margin="0" Orientation="Horizontal">
+                    <Border x:Name="A3" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="B3" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="C3" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="D3" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="E3" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="F3" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="G3" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel x:Name="Row2" Height="111" Margin="0" Orientation="Horizontal">
+                    <Border x:Name="A2" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="B2" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="C2" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="D2" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="E2" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="F2" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="G2" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel x:Name="Row1" Height="111" Margin="0" Orientation="Horizontal">
+                    <Border x:Name="A1" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="B1" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="C1" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="D1" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="E1" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="F1" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="G1" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
+                        <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+            <TextBlock Canvas.Left="33" TextWrapping="Wrap" Text="Play Log:" Canvas.Top="51" Width="171" FontSize="22"/>
+            <TextBox x:Name="log" Canvas.Left="33" TextWrapping="Wrap" Canvas.Top="81" Width="207" Height="470" FontSize="12" IsReadOnly="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalContentAlignment="Top" FontFamily="Anonymous Pro"/>
+        </Canvas>
+    </StackPanel>
+</Page>
