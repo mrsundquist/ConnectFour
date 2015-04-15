@@ -114,16 +114,26 @@ namespace ConnectFour
         {
             bool validChoice = false;
 
-            int winningColumn = connectFour();
-
+            //try for immediate win!
+            int winningColumn = connectFour(computerColor);
             if (winningColumn > -1)
                 validChoice = placeComputerChecker(winningColumn);
 
+            //try for immediate block
             if (!validChoice)
-                validChoice = placeComputerChecker(blockOpponent());
+            {
+                int blockingColumn = connectFour(playerColor);
+                if (blockingColumn > -1)
+                    validChoice = placeComputerChecker(blockingColumn);
+            }
 
-            //implement smartchoice here
+            //try for historically smart choice
+            if (!validChoice)
+            {
+
+            }
             
+            //settle for a random choice
             if (!validChoice)
             {
                 do { validChoice = placeComputerChecker(chooseRandom()); }

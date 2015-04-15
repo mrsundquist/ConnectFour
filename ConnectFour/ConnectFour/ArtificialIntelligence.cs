@@ -13,14 +13,14 @@ namespace ConnectFour
             return rnd.Next(0, 7);
         }
 
-        private int connectFour()
+        private int connectFour(Checker color)
         {
             for (int testColumn = 0; testColumn < 7; testColumn++)
             {
                 Checker[,] shadowBoard = this.shadow();
-                if (placeChecker(testColumn, computerColor, shadowBoard, true)) // if a legal move
+                if (placeChecker(testColumn, color, shadowBoard, true)) // if a legal move
                 {
-                    if (checkWin(computerColor, shadowBoard, true)) // this is a winning move!
+                    if (checkWin(color, shadowBoard, true)) // this is a winning move!
                     {
                         return testColumn; // do it for sure!
                     }
@@ -28,11 +28,5 @@ namespace ConnectFour
             }
             return -1; // no winning move
         }
-
-        private int blockOpponent()
-        {
-            return chooseRandom();
-        }
-
     }
 }
