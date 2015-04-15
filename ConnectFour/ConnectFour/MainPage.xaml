@@ -202,7 +202,11 @@
                 </StackPanel>
             </StackPanel>
             <TextBlock Canvas.Left="33" TextWrapping="Wrap" Text="Play Log:" Canvas.Top="51" Width="171" FontSize="22"/>
-            <TextBox x:Name="log" Canvas.Left="33" TextWrapping="Wrap" Canvas.Top="81" Width="207" Height="470" FontSize="12" IsReadOnly="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalContentAlignment="Top" FontFamily="Anonymous Pro"/>
+            <TextBox x:Name="log" Canvas.Left="33" TextWrapping="Wrap" Canvas.Top="81" Width="207" Height="554" FontSize="12" IsReadOnly="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalContentAlignment="Top" FontFamily="Anonymous Pro"/>
+            <TextBlock Canvas.Left="1134" TextWrapping="Wrap" Text="Computer:" Canvas.Top="273" Width="111" FontSize="22" Height="23"/>
+            <TextBlock Canvas.Left="1134" TextWrapping="Wrap" Text="Player:" Canvas.Top="351" Width="111" FontSize="22" Height="23"/>
+            <TextBox x:Name="computerScore" Canvas.Left="1134" TextWrapping="Wrap" Canvas.Top="299" Width="111" Height="30" FontSize="20" IsReadOnly="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalContentAlignment="Top" FontFamily="Anonymous Pro" Text="0" Padding="10,3,10,0" MinHeight="2" MinWidth="0" TextAlignment="Right" Foreground="#FFEEDE9A" Background="{x:Null}"/>
+            <TextBox x:Name="playerScore" Canvas.Left="1134" TextWrapping="Wrap" Canvas.Top="377" Width="111" Height="30" FontSize="20" IsReadOnly="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalContentAlignment="Top" FontFamily="Anonymous Pro" Text="0" Padding="10,3,10,0" MinHeight="2" MinWidth="0" TextAlignment="Right" Foreground="#FFEEDE9A" Background="{x:Null}"/>
         </Canvas>
     </StackPanel>
 </Page>

@@ -34,6 +34,7 @@ namespace ConnectFour
         {
             this.hideOptions();
             theGame = new Board(!FirstPlayer.IsOn, !ComputerColor.IsOn, YellowSquare);
+            log.Text = "";
             if (!FirstPlayer.IsOn)
             {
                 theGame.computeChoice();
@@ -74,6 +75,7 @@ namespace ConnectFour
                 if (theGame.checkPlayerWin())
                 {
                     log.Text += "\n<--PLAYER WINS-->";
+                    playerScore.Text = (Convert.ToInt32(playerScore.Text) + 1).ToString();
                     unhideOptions();
                 }
 
@@ -94,6 +96,7 @@ namespace ConnectFour
                     if (theGame.checkComputerWin())
                     {
                         log.Text += "\n<--COMPUTER WINS-->";
+                        computerScore.Text = (Convert.ToInt32(computerScore.Text) + 1).ToString();
                         unhideOptions();
                     }
 

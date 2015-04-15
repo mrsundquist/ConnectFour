@@ -12,7 +12,7 @@ namespace ConnectFour
 {
     enum Checker { empty, black, red };
 
-    class Board
+    public partial class Board
     {
         Checker[,] theBoard;
         bool computerFirst;
@@ -21,6 +21,7 @@ namespace ConnectFour
         StackPanel UIBoard;
         bool gameOver;
         int lastColumn;
+        Random rnd;
 
         public Board(bool computerFirst, bool computerBlack, StackPanel UIBoard)
         {
@@ -30,6 +31,7 @@ namespace ConnectFour
             this.UIBoard = UIBoard;
             this.gameOver = false;
             this.lastColumn = 0;
+            this.rnd = new Random();
             
             this.theBoard = new Checker[6, 7];
             for (int row = 0; row < 6; row++)
@@ -41,13 +43,26 @@ namespace ConnectFour
                 }
             }
         }
-        
+
+        private Checker[,] shadow() // returns copy of the logical board, not UI board
+        {
+            Checker[,] shadowBoard = new Checker[6,7];
+            for (int row = 0; row < 6; row++)
+            {
+                for (int column = 0; column < 7; column++)
+                {
+                    shadowBoard[row, column] = this.theBoard[row, column];
+                }
+            }
+            return shadowBoard;
+        }
+
         public bool placePlayerChecker(int column)
         {
             if (!this.gameOver)
             {
                 lastColumn = column;
-                return placeChecker(column, playerColor);
+                return placeChecker(column, playerColor, this.theBoard);
             }
             else
                 return true;
@@ -58,20 +73,20 @@ namespace ConnectFour
             if (!this.gameOver)
             {
                 lastColumn = column;
-                return placeChecker(column, computerColor);
+                return placeChecker(column, computerColor, this.theBoard);
             }
             else
                 return true;
         }
 
-        private bool placeChecker(int column, Checker color)
+        private bool placeChecker(int column, Checker color, Checker[,] gameBoard, bool peek = false)
         {
             for (int row = 5; row >= 0; row--) // 5 is bottom row, 0 is top row
             {
-                if (this.theBoard[row, column] == Checker.empty)
+                if (gameBoard[row, column] == Checker.empty)
                 {
-                    this.theBoard[row, column] = color;
-                    colorChecker(row, column, color);
+                    gameBoard[row, column] = color;
+                    if (!peek) colorChecker(row, column, color);
                     return true;
                 }
             }
@@ -98,46 +113,53 @@ namespace ConnectFour
         public void computeChoice()
         {
             bool validChoice = false;
-            do
-            {
-                validChoice = placeComputerChecker(chooseRandom());
-            }
-            while (!validChoice);
-        }
 
-        private int chooseRandom()
-        {
-            Random rnd = new Random();
-            return rnd.Next(0, 7);
+            int winningColumn = connectFour();
+
+            if (winningColumn > -1)
+                validChoice = placeComputerChecker(winningColumn);
+
+            if (!validChoice)
+                validChoice = placeComputerChecker(blockOpponent());
+
+            //implement smartchoice here
+            
+            if (!validChoice)
+            {
+                do { validChoice = placeComputerChecker(chooseRandom()); }
+                while (!validChoice);
+            }
         }
 
         public bool checkPlayerWin()
         {
-            return checkWin(playerColor);
+            return checkWin(playerColor, this.theBoard);
         }
 
         public bool checkComputerWin()
         {
-            return checkWin(computerColor);
+            return checkWin(computerColor, this.theBoard);
         }
 
-        private bool checkWin(Checker color)
+        private bool checkWin(Checker color, Checker[,] gameBoard, bool peek = false)
         {
-            this.gameOver = (checkHorizontal(color) || checkVertical(color) || 
-                checkDiagonal1(color) || checkDiagonal2(color));
-            return this.gameOver;
+            bool win = false;
+            win = (checkHorizontal(color, gameBoard) || checkVertical(color, gameBoard) || 
+                checkDiagonal1(color,gameBoard) || checkDiagonal2(color, gameBoard));
+            if (!peek) this.gameOver = win;
+            return win;
         }
 
-        private bool checkHorizontal(Checker color)
+        private bool checkHorizontal(Checker color, Checker[,] gameBoard)
         {
             for (int row = 0; row < 6; row++)
             {
                 for (int column = 0; column < 4; column++)
                 {
-                    if (this.theBoard[row, column] == color &&
-                        this.theBoard[row, column + 1] == color &&
-                        this.theBoard[row, column + 2] == color &&
-                        this.theBoard[row, column + 3] == color)
+                    if (gameBoard[row, column] == color &&
+                        gameBoard[row, column + 1] == color &&
+                        gameBoard[row, column + 2] == color &&
+                        gameBoard[row, column + 3] == color)
                     {
                         return true;
                     }
@@ -146,16 +168,16 @@ namespace ConnectFour
             return false;
         }
 
-        private bool checkVertical(Checker color)
+        private bool checkVertical(Checker color, Checker[,] gameBoard)
         {
             for (int row = 0; row < 3; row++)
             {
                 for (int column = 0; column < 7; column++)
                 {
-                    if (this.theBoard[row, column] == color &&
-                        this.theBoard[row + 1, column] == color &&
-                        this.theBoard[row + 2, column] == color &&
-                        this.theBoard[row + 3, column] == color)
+                    if (gameBoard[row, column] == color &&
+                        gameBoard[row + 1, column] == color &&
+                        gameBoard[row + 2, column] == color &&
+                        gameBoard[row + 3, column] == color)
                     {
                         return true;
                     }
@@ -164,16 +186,16 @@ namespace ConnectFour
             return false;
         }
 
-        private bool checkDiagonal1(Checker color)
+        private bool checkDiagonal1(Checker color, Checker[,] gameBoard)
         {
             for (int row = 0; row < 3; row++)
             {
                 for (int column = 0; column < 4; column++)
                 {
-                    if (this.theBoard[row, column] == color &&
-                        this.theBoard[row + 1, column + 1] == color &&
-                        this.theBoard[row + 2, column + 2] == color &&
-                        this.theBoard[row + 3, column + 3] == color)
+                    if (gameBoard[row, column] == color &&
+                        gameBoard[row + 1, column + 1] == color &&
+                        gameBoard[row + 2, column + 2] == color &&
+                        gameBoard[row + 3, column + 3] == color)
                     {
                         return true;
                     }
@@ -182,16 +204,16 @@ namespace ConnectFour
             return false;
         }
 
-        private bool checkDiagonal2(Checker color)
+        private bool checkDiagonal2(Checker color, Checker[,] gameBoard)
         {
             for (int row = 3; row < 6; row++)
             {
                 for (int column = 0; column < 4; column++)
                 {
-                    if (this.theBoard[row, column] == color &&
-                        this.theBoard[row - 1, column + 1] == color &&
-                        this.theBoard[row - 2, column + 2] == color &&
-                        this.theBoard[row - 3, column + 3] == color)
+                    if (gameBoard[row, column] == color &&
+                        gameBoard[row - 1, column + 1] == color &&
+                        gameBoard[row - 2, column + 2] == color &&
+                        gameBoard[row - 3, column + 3] == color)
                     {
                         return true;
                     }
