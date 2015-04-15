@@ -28,5 +28,11 @@ namespace ConnectFour
             }
             return -1; // no winning move
         }
+
+        private int powerPlay()
+        {
+            
+            return chooseRandom(); // remove after implementation
+        }
     }
 }

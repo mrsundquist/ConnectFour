@@ -130,7 +130,9 @@ namespace ConnectFour
             //try for historically smart choice
             if (!validChoice)
             {
-
+                int goodChoice = powerPlay();
+                if (goodChoice > -1)
+                    validChoice = placeComputerChecker(goodChoice);
             }
             
             //settle for a random choice
