@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -35,6 +36,16 @@ namespace ConnectFour
             this.hideOptions();
             theGame = new Board(!FirstPlayer.IsOn, !ComputerColor.IsOn, YellowSquare);
             log.Text = "";
+            if (ComputerColor.IsOn)
+            {
+                computerScore.BorderBrush = new SolidColorBrush(Colors.DarkRed);
+                playerScore.BorderBrush = new SolidColorBrush(Colors.Black);
+            }
+            else
+            {
+                computerScore.BorderBrush = new SolidColorBrush(Colors.Black);
+                playerScore.BorderBrush = new SolidColorBrush(Colors.DarkRed);
+            }
             if (!FirstPlayer.IsOn)
             {
                 theGame.computeChoice();

@@ -32,6 +32,14 @@ namespace ConnectFour
             this.gameOver = false;
             this.lastColumn = 0;
             this.rnd = new Random();
+            if (firstTime)
+            {
+                historicalData = new Dictionary<string, stateData>();
+                firstTime = false;
+            }
+           
+            //will need to load values from txt file for history
+            this.gameStates = new HashSet<string>();
             
             this.theBoard = new Checker[6, 7];
             for (int row = 0; row < 6; row++)
@@ -62,7 +70,9 @@ namespace ConnectFour
             if (!this.gameOver)
             {
                 lastColumn = column;
-                return placeChecker(column, playerColor, this.theBoard);
+                bool validMove = placeChecker(column, playerColor, this.theBoard);
+                gameStates.Add(getState(computerColor));
+                return validMove;
             }
             else
                 return true;
@@ -73,7 +83,9 @@ namespace ConnectFour
             if (!this.gameOver)
             {
                 lastColumn = column;
-                return placeChecker(column, computerColor, this.theBoard);
+                bool validMove = placeChecker(column, computerColor, this.theBoard);
+                gameStates.Add(getState(computerColor));
+                return validMove;
             }
             else
                 return true;
@@ -158,7 +170,11 @@ namespace ConnectFour
             bool win = false;
             win = (checkHorizontal(color, gameBoard) || checkVertical(color, gameBoard) || 
                 checkDiagonal1(color,gameBoard) || checkDiagonal2(color, gameBoard));
-            if (!peek) this.gameOver = win;
+            if (!peek)
+            {
+                this.gameOver = win;
+                if (win) endGame(color);
+            }
             return win;
         }
 
@@ -248,6 +264,7 @@ namespace ConnectFour
                     }
                 }
             }
+            endGame(Checker.empty);
             return true;
         }
 
