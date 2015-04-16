@@ -34,7 +34,7 @@ namespace ConnectFour
         private void StartGame(object sender, TappedRoutedEventArgs e)
         {
             this.hideOptions();
-            theGame = new Board(!FirstPlayer.IsOn, !ComputerColor.IsOn, YellowSquare);
+            theGame = new Board(!FirstPlayer.IsOn, !ComputerColor.IsOn, (int)Difficulty.Value, YellowSquare);
             log.Text = "";
             if (ComputerColor.IsOn)
             {
@@ -69,10 +69,11 @@ namespace ConnectFour
 
         private void reset(object sender, TappedRoutedEventArgs e)
         {
-            theGame = new Board(!FirstPlayer.IsOn, !ComputerColor.IsOn, YellowSquare);
+            theGame = new Board(!FirstPlayer.IsOn, !ComputerColor.IsOn, (int)Difficulty.Value, YellowSquare);
             log.Text = "";
             FirstPlayer.IsOn = false;
             ComputerColor.IsOn = false;
+            Difficulty.Value = 1;
         }
 
         private async void playerInput(object sender, TappedRoutedEventArgs e)

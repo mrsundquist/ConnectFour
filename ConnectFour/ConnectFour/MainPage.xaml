@@ -11,8 +11,9 @@
         <StackPanel x:Name="Options" Height="100" Orientation="Horizontal">
             <ToggleSwitch x:Name="FirstPlayer" Header="First Player" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="100" OffContent="Computer" OnContent="Player" Width="200"/>
             <ToggleSwitch x:Name="ComputerColor" Header="Computer Color" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200" Height="100" OffContent="Black" OnContent="Red"/>
+            <Slider x:Name="Difficulty" Width="150" Maximum="3" Minimum="1" LargeChange="1" Value="1" Header="Difficulty" Height="100"/>
             <AppBarButton x:Name="Start" HorizontalAlignment="Stretch" Icon="Play" Label="Start" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="StartGame"/>
-            <AppBarButton x:Name="Reset" HorizontalAlignment="Stretch" Icon="Refresh" Label="Reset" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="reset" Margin="766,0,0,0"/>
+            <AppBarButton x:Name="Reset" HorizontalAlignment="Stretch" Icon="Refresh" Label="Reset" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="reset" Margin="616,0,0,0"/>
         </StackPanel>
         <StackPanel x:Name="Labels" Height="30" Orientation="Horizontal" Visibility="Collapsed">
             <TextBlock TextWrapping="Wrap" Text="A" Width="111" Height="30" FontSize="24" TextAlignment="Center" Margin="294,0,0,0"/>

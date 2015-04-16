@@ -18,16 +18,18 @@ namespace ConnectFour
         bool computerFirst;
         Checker computerColor;
         Checker playerColor;
+        int difficulty;
         StackPanel UIBoard;
         bool gameOver;
         int lastColumn;
         Random rnd;
 
-        public Board(bool computerFirst, bool computerBlack, StackPanel UIBoard)
+        public Board(bool computerFirst, bool computerBlack, int difficulty, StackPanel UIBoard)
         {
             this.computerFirst = computerFirst;
             this.computerColor = computerBlack ? Checker.black : Checker.red;
             this.playerColor = !computerBlack ? Checker.black : Checker.red;
+            this.difficulty = difficulty;
             this.UIBoard = UIBoard;
             this.gameOver = false;
             this.lastColumn = 0;
@@ -35,6 +37,8 @@ namespace ConnectFour
             if (firstTime)
             {
                 historicalData = new Dictionary<string, stateData>();
+                Writer.Read(historicalData);
+                
                 firstTime = false;
             }
            
@@ -126,25 +130,31 @@ namespace ConnectFour
         {
             bool validChoice = false;
 
-            //try for immediate win!
-            int winningColumn = connectFour(computerColor);
-            if (winningColumn > -1)
-                validChoice = placeComputerChecker(winningColumn);
-
-            //try for immediate block
-            if (!validChoice)
+            if (this.difficulty >= 2)
             {
-                int blockingColumn = connectFour(playerColor);
-                if (blockingColumn > -1)
-                    validChoice = placeComputerChecker(blockingColumn);
+                //try for immediate win!
+                int winningColumn = connectFour(computerColor);
+                if (winningColumn > -1)
+                    validChoice = placeComputerChecker(winningColumn);
+            
+                //try for immediate block
+                if (!validChoice)
+                {
+                    int blockingColumn = connectFour(playerColor);
+                    if (blockingColumn > -1)
+                        validChoice = placeComputerChecker(blockingColumn);
+                }
             }
 
-            //try for historically smart choice
-            if (!validChoice)
+            if (this.difficulty >= 3)
             {
-                int goodChoice = powerPlay();
-                if (goodChoice > -1)
-                    validChoice = placeComputerChecker(goodChoice);
+                //try for historically smart choice
+                if (!validChoice)
+                {
+                    int goodChoice = powerPlay();
+                    if (goodChoice > -1)
+                        validChoice = placeComputerChecker(goodChoice);
+                }
             }
             
             //settle for a random choice

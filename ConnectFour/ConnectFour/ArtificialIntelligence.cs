@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConnectFour
 {
-    struct stateData { public int numPlays; public float numWins; public float winPct; }
+    struct stateData { public int numPlays; public int numWins;}
 
 
     public partial class Board
@@ -47,9 +47,9 @@ namespace ConnectFour
 
         private void endGame(Checker result)
         {
-            float score = 0; // computer lose
-            if (result == computerColor) score += 1; // computer win
-            if (result == Checker.empty) score += 0.5F; // tie
+            int score = 0; // computer lose
+            if (result == computerColor) score += 2; // computer win
+            if (result == Checker.empty) score += 1; // tie
 
             string[] data = new string[gameStates.Count];
 
@@ -65,16 +65,14 @@ namespace ConnectFour
                 }
                 record.numPlays += 1;
                 record.numWins += score;
-                record.winPct = record.numWins / (record.numPlays);
                 historicalData[state] = record;
 
                 string recordString = null;
-                recordString = state + " " + record.numPlays.ToString() + " " 
-                    + record.numWins.ToString() + " " + record.winPct.ToString();
+                recordString = state + " " + record.numPlays.ToString() + " " + record.numWins.ToString();
                 dataList.Add(recordString);
             }
 
-            //output to CSV file
+            //output to file
             Writer.Write(dataList.ToArray());
         }
 
