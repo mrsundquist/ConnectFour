@@ -120,5 +120,19 @@ namespace ConnectFour
                 }
             }
         }
+
+        private void CollectData(object sender, TappedRoutedEventArgs e)
+        {
+            while (true)
+            {
+                theGame = new Board(true, true, 2, YellowSquare);
+                bool computerGoing = true;
+                do
+                {
+                    theGame.computeChoice(computerGoing);
+                    computerGoing = !computerGoing;
+                } while (!(theGame.checkComputerWin() || theGame.checkComputerWin(false) || theGame.checkCats()));
+            }
+        }
     }
 }
