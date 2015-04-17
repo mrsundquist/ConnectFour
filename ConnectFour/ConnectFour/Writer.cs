@@ -8,7 +8,7 @@ using Windows.Storage;
 
 namespace ConnectFour
 {
-    public partial class Board
+    public partial class Board 
     {
         static StorageFolder folder;
         static StreamWriter outputStream;
