@@ -1,14 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Shapes;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Shapes;
 
 namespace ConnectFour
 {
@@ -24,8 +19,9 @@ namespace ConnectFour
         StackPanel UIBoard;
         bool gameOver;
         int lastColumn;
+        bool dataRecord;
 
-        public Board(bool computerFirst, bool computerBlack, int difficulty, StackPanel UIBoard)
+        public Board(bool computerFirst, bool computerBlack, int difficulty, StackPanel UIBoard, bool dataRecord = false)
         {
             this.computerFirst = computerFirst;
             this.computerColor = computerBlack ? Checker.black : Checker.red;
@@ -38,19 +34,15 @@ namespace ConnectFour
             this.gameStates = new HashSet<string>();
             if (firstTime)
             {
-
-                Board.folder = Windows.Storage.ApplicationData.Current.LocalFolder;
-                getStreams();
-                Board.outputStream = new StreamWriter(Board.output);
-                Board.inputStream = new StreamReader(Board.input);
                 historicalData = new Dictionary<string, stateData>();
-                Read(historicalData);
+                Writer.Read(historicalData);
+                dataList = new List<string>();
                 firstTime = false;
             }
-           
-            //will need to load values from txt file for history
+            this.dataRecord = dataRecord;
+
             this.gameStates = new HashSet<string>();
-            
+
             this.theBoard = new Checker[6, 7];
             for (int row = 0; row < 6; row++)
             {
@@ -64,7 +56,7 @@ namespace ConnectFour
 
         private Checker[,] shadow() // returns copy of the logical board, not UI board
         {
-            Checker[,] shadowBoard = new Checker[6,7];
+            Checker[,] shadowBoard = new Checker[6, 7];
             for (int row = 0; row < 6; row++)
             {
                 for (int column = 0; column < 7; column++)
@@ -88,13 +80,13 @@ namespace ConnectFour
                 return true;
         }
 
-        private bool placeComputerChecker(int column)
+        private bool placeComputerChecker(int column, Checker color)
         {
             if (!this.gameOver)
             {
                 lastColumn = column;
-                bool validMove = placeChecker(column, computerColor, this.theBoard);
-                gameStates.Add(getState(computerColor));
+                bool validMove = placeChecker(column, color, this.theBoard);
+                gameStates.Add(getState(color));
                 return validMove;
             }
             else
@@ -120,7 +112,7 @@ namespace ConnectFour
             SolidColorBrush checkerColor;
             if (color == Checker.red) checkerColor = new SolidColorBrush(Colors.DarkRed);
             else if (color == Checker.black) checkerColor = new SolidColorBrush(Colors.Black);
-            else checkerColor = new SolidColorBrush(Color.FromArgb(255,77, 77, 65));
+            else checkerColor = new SolidColorBrush(Color.FromArgb(255, 77, 77, 65));
 
             //find the current checker
             UIElementCollection rows = UIBoard.Children;
@@ -132,23 +124,31 @@ namespace ConnectFour
             thisChecker.Fill = checkerColor;
         }
 
-        public void computeChoice()
+        public void computeChoice(bool computerPlaying = true)
         {
+            Checker color = computerColor;
+            Checker offColor = playerColor;
+            if (!computerPlaying)
+            {
+                color = playerColor;
+                offColor = computerColor;
+            }
+
             bool validChoice = false;
 
             if (this.difficulty >= 2)
             {
                 //try for immediate win!
-                int winningColumn = connectFour(computerColor);
+                int winningColumn = connectFour(color);
                 if (winningColumn > -1)
-                    validChoice = placeComputerChecker(winningColumn);
-            
+                    validChoice = placeComputerChecker(winningColumn, color);
+
                 //try for immediate block
                 if (!validChoice)
                 {
-                    int blockingColumn = connectFour(playerColor);
+                    int blockingColumn = connectFour(offColor);
                     if (blockingColumn > -1)
-                        validChoice = placeComputerChecker(blockingColumn);
+                        validChoice = placeComputerChecker(blockingColumn, color);
                 }
             }
 
@@ -159,14 +159,14 @@ namespace ConnectFour
                 {
                     int goodChoice = powerPlay();
                     if (goodChoice > -1)
-                        validChoice = placeComputerChecker(goodChoice);
+                        validChoice = placeComputerChecker(goodChoice, color);
                 }
             }
-            
+
             //settle for a random choice
             if (!validChoice)
             {
-                do { validChoice = placeComputerChecker(chooseRandom()); }
+                do { validChoice = placeComputerChecker(chooseRandom(), color); }
                 while (!validChoice);
             }
         }
@@ -176,16 +176,23 @@ namespace ConnectFour
             return checkWin(playerColor, this.theBoard);
         }
 
-        public bool checkComputerWin()
+        public bool checkComputerWin(bool computerPlaying = true)
+        {
+            Checker color = computerColor;
+            Checker offColor = playerColor;
+            if (!computerPlaying)
             {
-            return checkWin(computerColor, this.theBoard);
+                color = playerColor;
+                offColor = computerColor;
+            }
+            return checkWin(color, this.theBoard);
         }
 
         private bool checkWin(Checker color, Checker[,] gameBoard, bool peek = false)
         {
             bool win = false;
-            win = (checkHorizontal(color, gameBoard) || checkVertical(color, gameBoard) || 
-                checkDiagonal1(color,gameBoard) || checkDiagonal2(color, gameBoard));
+            win = (checkHorizontal(color, gameBoard) || checkVertical(color, gameBoard) ||
+                checkDiagonal1(color, gameBoard) || checkDiagonal2(color, gameBoard));
             if (!peek)
             {
                 this.gameOver = win;
@@ -269,39 +276,37 @@ namespace ConnectFour
         public bool checkCats()
         {
             gameOver = true;
-            for (int row = 0; row < 6; row++)
-            {
+            int row = 0;
             for (int column = 0; column < 7; column++)
             {
-                    if (this.theBoard[row, column] != Checker.empty)
+                if (this.theBoard[row, column] == Checker.empty)
                 {
                     gameOver = false;
                     return false;
                 }
             }
-            }
             endGame(Checker.empty);
             return true;
         }
-        
+
         public string getLastColumn()
         {
             switch (this.lastColumn)
             {
                 case 0:
-                    return "A"; break;
+                    return "A";
                 case 1:
-                    return "B"; break;
+                    return "B";
                 case 2:
-                    return "C"; break;
+                    return "C";
                 case 3:
-                    return "D"; break;
+                    return "D";
                 case 4:
-                    return "E"; break;
+                    return "E";
                 case 5:
-                    return "F"; break;
+                    return "F";
                 case 6:
-                    return "G"; break;
+                    return "G";
                 default:
                     return "";
             }

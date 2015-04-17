@@ -16,6 +16,8 @@ namespace ConnectFour
         static Dictionary<string, stateData> historicalData;
         HashSet<string> gameStates;
         Random rnd;
+        static List<string> dataList;
+
 
         private string getState(Checker computerColor)
         {
@@ -54,27 +56,30 @@ namespace ConnectFour
 
             string[] data = new string[gameStates.Count];
 
-            List<string> dataList = new List<string>();
+            //List<string> dataList = new List<string>();
 
+            bool blackRecord = true; // computer record are black, comp2 are red
+            // need to record every other as a win if won, etc.
             foreach (string state in gameStates)
             {
                 stateData record = new stateData();
-                if (historicalData.ContainsKey(state))
-                {
-                    record.numPlays = historicalData[state].numPlays;
-                    record.numWins = historicalData[state].numWins;
-                }
-                record.numPlays += 1;
-                record.numWins += score;
+                record.numPlays = 1;
+                if (blackRecord) record.numWins += score;
+                else record.numWins += (2 - score); // 0 if comp won, 1 if tie, 2 if comp lost [for red]
                 historicalData[state] = record;
+                blackRecord = !blackRecord;
 
                 string recordString = null;
                 recordString = state + " " + record.numPlays.ToString() + " " + record.numWins.ToString();
-                dataList.Add(recordString);
+                Board.dataList.Add(recordString);
             }
 
             //output to file
-            Write(dataList.ToArray());
+            if (this.dataRecord)
+            {
+                Writer.Write(dataList.ToArray());
+                Board.dataList.Clear();
+            }
         }
 
         private int chooseRandom()
@@ -100,7 +105,7 @@ namespace ConnectFour
 
         private int powerPlay()
         {
-            
+
             return chooseRandom(); // remove after implementation
         }
     }

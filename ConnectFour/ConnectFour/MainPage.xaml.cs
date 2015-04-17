@@ -1,20 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -83,7 +73,7 @@ namespace ConnectFour
             if (theGame.placePlayerChecker(column)) // returns true if checker placed
             {
                 log.Text += ("Player:   Column " + theGame.getLastColumn() + "\n");
-                
+
                 //check for win
                 if (theGame.checkPlayerWin())
                 {
@@ -122,25 +112,32 @@ namespace ConnectFour
             }
         }
 
-        private void CollectData(object sender, TappedRoutedEventArgs e)
+        private async void CollectData(object sender, TappedRoutedEventArgs e)
         {
-            //Stopwatch timer = new Stopwatch();
-            //timer.Start();
-            for (int numGames = 0; numGames < 2; numGames++)
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            for (int numGames = 1; numGames <= 100; numGames++)
             {
-                theGame = new Board(true, true, 2, YellowSquare);
+
+                if (numGames % 25 == 0)
+                {
+                    theGame = new Board(true, true, 2, YellowSquare, true);
+                    log.Text = "Game: " + numGames.ToString() + "\n";
+                }
+                else theGame = new Board(true, true, 2, YellowSquare, false);
                 bool computerGoing = true;
                 do
                 {
                     theGame.computeChoice(computerGoing);
                     computerGoing = !computerGoing;
+                    await Task.Delay(5);
                 } while (!(theGame.checkComputerWin() || theGame.checkComputerWin(false) || theGame.checkCats()));
 
             }
-            //timer.Stop();
-            //TimeSpan ts = timer.Elapsed;
-            //string elapsedTime = String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
-            //log.Text += "RunTime " + elapsedTime + "\n";
+            timer.Stop();
+            TimeSpan ts = timer.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+            log.Text += "RunTime: " + elapsedTime + "\n";
         }
     }
 }

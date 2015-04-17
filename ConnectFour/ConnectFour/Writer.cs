@@ -8,42 +8,40 @@ using Windows.Storage;
 
 namespace ConnectFour
 {
-    public partial class Board 
+    class Writer
     {
-        static StorageFolder folder;
-        static StreamWriter outputStream;
-        static StreamReader inputStream;
+        static StorageFolder folder = Windows.Storage.ApplicationData.Current.LocalFolder;
         static Stream output;
         static Stream input;
+        static StreamWriter outputStream;
+        static StreamReader inputStream;
 
-
-        private async void getStreams()
+        static public async void Write(string[] theData)
         {
-            
-            Board.output = await Board.folder.OpenStreamForWriteAsync("ConnectFourData.txt", CreationCollisionOption.OpenIfExists);
-            Board.input = await Board.folder.OpenStreamForReadAsync("ConnectFourData.txt");
-        }
+            Writer.output = await Writer.folder.OpenStreamForWriteAsync("ConnectFourData.txt", CreationCollisionOption.OpenIfExists);
+            Writer.outputStream = new StreamWriter(output);
 
-        public void Write(string[] theData)
-        {
             foreach (string record in theData)
             {
-                Board.outputStream.Write(record);
-                Board.outputStream.WriteLine();
+                Writer.outputStream.Write(record);
+                Writer.outputStream.WriteLine();
             }
 
-            //outputStream.Dispose();
-            //output.Dispose();
+            outputStream.Dispose();
+            output.Dispose();
         }
 
-        private void Read(Dictionary<string, stateData> historicalData)
+        static public async void Read(Dictionary<string, stateData> historicalData)
         {
             string dataLine;
             string[] dataParts = new string[3];
             string state;
             stateData record = new stateData();
 
-            while ((dataLine = Board.inputStream.ReadLine()) != null)
+            Writer.input = await Writer.folder.OpenStreamForReadAsync("ConnectFourData.txt");
+            Writer.inputStream = new StreamReader(input);
+
+            while ((dataLine = inputStream.ReadLine()) != null)
             {
                 dataParts = dataLine.Split(' ');
                 state = dataParts[0];
@@ -57,8 +55,9 @@ namespace ConnectFour
                 }
                 historicalData[state] = record;
             }
-            //inputStream.Dispose();
-            //input.Dispose();
+            
+            inputStream.Dispose();
+            input.Dispose();
         }
     }
 }

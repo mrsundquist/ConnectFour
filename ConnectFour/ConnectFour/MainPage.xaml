@@ -13,7 +13,8 @@
             <ToggleSwitch x:Name="ComputerColor" Header="Computer Color" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200" Height="100" OffContent="Black" OnContent="Red"/>
             <Slider x:Name="Difficulty" Width="150" Maximum="3" Minimum="1" LargeChange="1" Value="1" Header="Difficulty" Height="100"/>
             <AppBarButton x:Name="Start" HorizontalAlignment="Stretch" Icon="Play" Label="Start" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="StartGame"/>
-            <AppBarButton x:Name="Reset" HorizontalAlignment="Stretch" Icon="Refresh" Label="Reset" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="reset" Margin="616,0,0,0"/>
+            <AppBarButton x:Name="DataBuild" HorizontalAlignment="Stretch" Icon="Repair" Label="Data Collect" VerticalAlignment="Stretch" Width="100" Tapped="CollectData"/>
+            <AppBarButton x:Name="Reset" HorizontalAlignment="Stretch" Icon="Refresh" Label="Reset" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="reset" Margin="516,0,0,0"/>
         </StackPanel>
         <StackPanel x:Name="Labels" Height="30" Orientation="Horizontal" Visibility="Collapsed">
             <TextBlock TextWrapping="Wrap" Text="A" Width="111" Height="30" FontSize="24" TextAlignment="Center" Margin="294,0,0,0"/>
@@ -62,7 +63,7 @@
             </AppBarButton>
         </StackPanel>
         <Canvas x:Name="Board" Margin="0,0,100,0" Width="1366" Height="668" Background="#FF4D4D41">
-            <StackPanel x:Name="YellowSquare" Background="#FFF0E84C" Height="666" Canvas.Left="294" ScrollViewer.VerticalScrollBarVisibility="Disabled" Width="777">
+            <StackPanel x:Name="YellowSquare" Background="#FFF0E84C" Height="666" Canvas.Left="294" Width="777">
                 <StackPanel x:Name="Row6" Height="111" Margin="0" Orientation="Horizontal">
                     <Border x:Name="A6" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
                         <Ellipse Fill="#FF4D4D41" Margin="0" Width="88" Height="88" HorizontalAlignment="Center" VerticalAlignment="Center"/>
