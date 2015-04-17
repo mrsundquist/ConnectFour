@@ -19,7 +19,7 @@ namespace ConnectFour
         static List<string> dataList;
 
 
-        private string getState(Checker computerColor)
+        private string getState(Checker color)
         {
             string stateString = null;
             for (int column = 0; column < 7; column++)
@@ -28,57 +28,63 @@ namespace ConnectFour
                 {
                     if (this.theBoard[row, column] == Checker.empty)
                     {
-                        stateString += "x";
+                        stateString += "^";
                         break;
                     }
-                    else if (this.theBoard[row, column] == computerColor)
+                    else if (this.theBoard[row, column] == color)
                     {
-                        stateString += "C";
+                        stateString += "s"; // 
                     }
                     else
                     {
-                        stateString += "P";
+                        stateString += "o";
                     }
                     if (row == 3)
                     {
-                        stateString += "x";
+                        stateString += "^";
                     }
                 }
+
             }
+            stateString += " ";
+            stateString += color.ToString();
             return stateString;
         }
 
         private void endGame(Checker result)
         {
-            int score = 0; // computer lose
-            if (result == computerColor) score += 2; // computer win
-            if (result == Checker.empty) score += 1; // tie
-
-            string[] data = new string[gameStates.Count];
-
-            //List<string> dataList = new List<string>();
-
-            bool blackRecord = true; // computer record are black, comp2 are red
-            // need to record every other as a win if won, etc.
-            foreach (string state in gameStates)
+            lock (this)
             {
-                stateData record = new stateData();
-                record.numPlays = 1;
-                if (blackRecord) record.numWins += score;
-                else record.numWins += (2 - score); // 0 if comp won, 1 if tie, 2 if comp lost [for red]
-                historicalData[state] = record;
-                blackRecord = !blackRecord;
+                int score = 0; // computer lose
+                if (result == computerColor) score += 2; // computer win
+                if (result == Checker.empty) score += 1; // tie
 
-                string recordString = null;
-                recordString = state + " " + record.numPlays.ToString() + " " + record.numWins.ToString();
-                Board.dataList.Add(recordString);
-            }
+                string[] data = new string[gameStates.Count];
 
-            //output to file
-            if (this.dataRecord)
-            {
-                Writer.Write(dataList.ToArray());
-                Board.dataList.Clear();
+                foreach (string state in gameStates)
+                {
+                    stateData record = new stateData();
+                    record.numPlays = 1;
+                    string[] dataParts = new string[2];
+                    dataParts = state.Split(' ');
+                    string saveStateString = dataParts[0];
+                    string colorString = dataParts[1];
+
+                    if (result.ToString() == colorString) record.numWins += score;
+                    else record.numWins += (2 - score); // 0 if comp won, 1 if tie, 2 if comp lost
+                    historicalData[saveStateString] = record;
+
+                    string recordString = null;
+                    recordString = saveStateString + " " + record.numPlays.ToString() + " " + record.numWins.ToString();
+                    Board.dataList.Add(recordString);
+                }
+
+                //output to file
+                if (this.dataRecord)
+                {
+                    Writer.Write(dataList.ToArray());
+                    Board.dataList.Clear();
+                }
             }
         }
 

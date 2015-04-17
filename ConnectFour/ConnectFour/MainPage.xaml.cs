@@ -118,7 +118,7 @@ namespace ConnectFour
             }
         }
 
-        private async void playerInputGodMode(object sender, TappedRoutedEventArgs e)
+        private void playerInputGodMode(object sender, TappedRoutedEventArgs e)
         {
             int column = Convert.ToInt32(((AppBarButton)sender).Tag); // tag holds column number
             GodPlayer = !GodPlayer;
@@ -158,10 +158,10 @@ namespace ConnectFour
             theGame = new Board(true, true, 2, YellowSquare, false); // preload the data to not affect the time
             Stopwatch timer = new Stopwatch();
             timer.Start();
-            for (int numGames = 1; numGames <= 15; numGames++)
+            for (int numGames = 1; numGames <= 3; numGames++)
             {
 
-                if (numGames % 5 == 0) theGame = new Board(true, true, 2, YellowSquare, true);
+                if (numGames % 1 == 0) theGame = new Board(true, true, 2, YellowSquare, true);
                 else theGame = new Board(true, true, 2, YellowSquare, false);
                 bool computerGoing = true;
                     do
@@ -174,7 +174,7 @@ namespace ConnectFour
             }
             timer.Stop();
             TimeSpan ts = timer.Elapsed;
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3.00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
             log.Text += "RunTime: " + elapsedTime + "\n";
         }
     }

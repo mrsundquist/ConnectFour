@@ -27,7 +27,7 @@ namespace ConnectFour
                 Writer.outputStream.WriteLine();
             }
 
-            //Writer.outputStream.Dispose();  // causes input string in not correct format
+            Writer.outputStream.Dispose();
             Writer.output.Dispose();
         }
 
@@ -45,6 +45,7 @@ namespace ConnectFour
             {
                 dataParts = dataLine.Split(' ');
                 state = dataParts[0];
+                
                 record.numPlays = Convert.ToInt32(dataParts[1]);
                 record.numWins = Convert.ToInt32(dataParts[2]);
 

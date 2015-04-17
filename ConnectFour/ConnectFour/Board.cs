@@ -35,13 +35,11 @@ namespace ConnectFour
             if (firstTime)
             {
                 historicalData = new Dictionary<string, stateData>();
-                Writer.Read(historicalData);
+                //Writer.Read(historicalData);
                 dataList = new List<string>();
                 firstTime = false;
             }
             this.dataRecord = dataRecord;
-
-            this.gameStates = new HashSet<string>();
 
             this.theBoard = new Checker[6, 7];
             for (int row = 0; row < 6; row++)
