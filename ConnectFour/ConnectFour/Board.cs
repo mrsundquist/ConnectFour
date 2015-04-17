@@ -1,8 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Shapes;
@@ -22,7 +24,6 @@ namespace ConnectFour
         StackPanel UIBoard;
         bool gameOver;
         int lastColumn;
-        Random rnd;
 
         public Board(bool computerFirst, bool computerBlack, int difficulty, StackPanel UIBoard)
         {
@@ -35,11 +36,17 @@ namespace ConnectFour
             this.lastColumn = 0;
             this.rnd = new Random();
             this.gameStates = new HashSet<string>();
+
+
             if (firstTime)
             {
+
+                Board.folder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                getStreams();
+                Board.outputStream = new StreamWriter(Board.output);
+                Board.inputStream = new StreamReader(Board.input);
                 historicalData = new Dictionary<string, stateData>();
-                Writer.Read(historicalData);
-                
+                Read(historicalData);
                 firstTime = false;
             }
            

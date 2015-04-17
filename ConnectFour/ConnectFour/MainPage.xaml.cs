@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
@@ -123,7 +124,9 @@ namespace ConnectFour
 
         private void CollectData(object sender, TappedRoutedEventArgs e)
         {
-            while (true)
+            //Stopwatch timer = new Stopwatch();
+            //timer.Start();
+            for (int numGames = 0; numGames < 2; numGames++)
             {
                 theGame = new Board(true, true, 2, YellowSquare);
                 bool computerGoing = true;
@@ -132,7 +135,12 @@ namespace ConnectFour
                     theGame.computeChoice(computerGoing);
                     computerGoing = !computerGoing;
                 } while (!(theGame.checkComputerWin() || theGame.checkComputerWin(false) || theGame.checkCats()));
+
             }
+            //timer.Stop();
+            //TimeSpan ts = timer.Elapsed;
+            //string elapsedTime = String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+            //log.Text += "RunTime " + elapsedTime + "\n";
         }
     }
 }

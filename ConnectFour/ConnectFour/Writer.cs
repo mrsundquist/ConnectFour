@@ -8,29 +8,42 @@ using Windows.Storage;
 
 namespace ConnectFour
 {
-    class Writer
+    public partial class Board
     {
-        static StorageFolder folder = Windows.Storage.ApplicationData.Current.LocalFolder;
-                
-        static public async void Write(string[] theData)
-        {
-            StorageFile outputFile = await
-             folder.CreateFileAsync("ConnectFourData.txt", CreationCollisionOption.OpenIfExists);
+        static StorageFolder folder;
+        static StreamWriter outputStream;
+        static StreamReader inputStream;
+        static Stream output;
+        static Stream input;
 
-           await Windows.Storage.FileIO.AppendLinesAsync(outputFile, theData);
+
+        private async void getStreams()
+        {
+            
+            Board.output = await Board.folder.OpenStreamForWriteAsync("ConnectFourData.txt", CreationCollisionOption.OpenIfExists);
+            Board.input = await Board.folder.OpenStreamForReadAsync("ConnectFourData.txt");
         }
 
-        static public async void Read(Dictionary<string, stateData> historicalData)
+        public void Write(string[] theData)
+        {
+            foreach (string record in theData)
+            {
+                Board.outputStream.Write(record);
+                Board.outputStream.WriteLine();
+            }
+
+            //outputStream.Dispose();
+            //output.Dispose();
+        }
+
+        private void Read(Dictionary<string, stateData> historicalData)
         {
             string dataLine;
             string[] dataParts = new string[3];
             string state;
             stateData record = new stateData();
 
-            System.IO.Stream input = await folder.OpenStreamForReadAsync("ConnectFourData.txt");
-            System.IO.StreamReader inputStream = new StreamReader(input);
-
-            while ((dataLine = inputStream.ReadLine()) != null)
+            while ((dataLine = Board.inputStream.ReadLine()) != null)
             {
                 dataParts = dataLine.Split(' ');
                 state = dataParts[0];
@@ -44,8 +57,8 @@ namespace ConnectFour
                 }
                 historicalData[state] = record;
             }
-            inputStream.Dispose();
-            input.Dispose();
+            //inputStream.Dispose();
+            //input.Dispose();
         }
     }
 }

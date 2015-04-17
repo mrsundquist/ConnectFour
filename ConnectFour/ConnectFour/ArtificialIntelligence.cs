@@ -15,6 +15,7 @@ namespace ConnectFour
         static bool firstTime = true;
         static Dictionary<string, stateData> historicalData;
         HashSet<string> gameStates;
+        Random rnd;
 
         private string getState(Checker computerColor)
         {
@@ -77,7 +78,7 @@ namespace ConnectFour
             }
 
             //output to file
-            Writer.Write(dataList.ToArray());
+            Write(dataList.ToArray());
         }
 
         private int chooseRandom()
