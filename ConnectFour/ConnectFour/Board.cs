@@ -36,8 +36,6 @@ namespace ConnectFour
             this.lastColumn = 0;
             this.rnd = new Random();
             this.gameStates = new HashSet<string>();
-
-
             if (firstTime)
             {
 
@@ -50,6 +48,7 @@ namespace ConnectFour
                 firstTime = false;
             }
            
+            //will need to load values from txt file for history
             this.gameStates = new HashSet<string>();
             
             this.theBoard = new Checker[6, 7];
@@ -89,13 +88,13 @@ namespace ConnectFour
                 return true;
         }
 
-        private bool placeComputerChecker(int column, Checker color)
+        private bool placeComputerChecker(int column)
         {
             if (!this.gameOver)
             {
                 lastColumn = column;
-                bool validMove = placeChecker(column, color, this.theBoard);
-                gameStates.Add(getState(color));
+                bool validMove = placeChecker(column, computerColor, this.theBoard);
+                gameStates.Add(getState(computerColor));
                 return validMove;
             }
             else
@@ -133,31 +132,23 @@ namespace ConnectFour
             thisChecker.Fill = checkerColor;
         }
 
-        public void computeChoice(bool computerPlaying = true)
+        public void computeChoice()
         {
-            Checker color = computerColor;
-            Checker offColor = playerColor;
-            if (!computerPlaying)
-            {
-                color = playerColor;
-                offColor = computerColor;
-            }
-
             bool validChoice = false;
 
             if (this.difficulty >= 2)
             {
                 //try for immediate win!
-                int winningColumn = connectFour(color);
+                int winningColumn = connectFour(computerColor);
                 if (winningColumn > -1)
-                    validChoice = placeComputerChecker(winningColumn, color);
+                    validChoice = placeComputerChecker(winningColumn);
             
                 //try for immediate block
                 if (!validChoice)
                 {
-                    int blockingColumn = connectFour(offColor);
+                    int blockingColumn = connectFour(playerColor);
                     if (blockingColumn > -1)
-                        validChoice = placeComputerChecker(blockingColumn, color);
+                        validChoice = placeComputerChecker(blockingColumn);
                 }
             }
 
@@ -168,14 +159,14 @@ namespace ConnectFour
                 {
                     int goodChoice = powerPlay();
                     if (goodChoice > -1)
-                        validChoice = placeComputerChecker(goodChoice, color);
+                        validChoice = placeComputerChecker(goodChoice);
                 }
             }
             
             //settle for a random choice
             if (!validChoice)
             {
-                do { validChoice = placeComputerChecker(chooseRandom(), color); }
+                do { validChoice = placeComputerChecker(chooseRandom()); }
                 while (!validChoice);
             }
         }
@@ -185,16 +176,9 @@ namespace ConnectFour
             return checkWin(playerColor, this.theBoard);
         }
 
-        public bool checkComputerWin(bool computerPlaying = true)
-        {
-            Checker color = computerColor;
-            Checker offColor = playerColor;
-            if (!computerPlaying)
+        public bool checkComputerWin()
             {
-                color = playerColor;
-                offColor = computerColor;
-            }
-            return checkWin(color, this.theBoard);
+            return checkWin(computerColor, this.theBoard);
         }
 
         private bool checkWin(Checker color, Checker[,] gameBoard, bool peek = false)
@@ -285,14 +269,16 @@ namespace ConnectFour
         public bool checkCats()
         {
             gameOver = true;
-            int row = 0;
+            for (int row = 0; row < 6; row++)
+            {
             for (int column = 0; column < 7; column++)
             {
-                if (this.theBoard[row, column] == Checker.empty)
+                    if (this.theBoard[row, column] != Checker.empty)
                 {
                     gameOver = false;
                     return false;
                 }
+            }
             }
             endGame(Checker.empty);
             return true;
@@ -303,19 +289,19 @@ namespace ConnectFour
             switch (this.lastColumn)
             {
                 case 0:
-                    return "A";
+                    return "A"; break;
                 case 1:
-                    return "B";
+                    return "B"; break;
                 case 2:
-                    return "C";
+                    return "C"; break;
                 case 3:
-                    return "D";
+                    return "D"; break;
                 case 4:
-                    return "E";
+                    return "E"; break;
                 case 5:
-                    return "F";
+                    return "F"; break;
                 case 6:
-                    return "G";
+                    return "G"; break;
                 default:
                     return "";
             }
