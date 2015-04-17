@@ -27,8 +27,8 @@ namespace ConnectFour
                 Writer.outputStream.WriteLine();
             }
 
-            outputStream.Dispose();
-            output.Dispose();
+            //Writer.outputStream.Dispose();  // causes input string in not correct format
+            Writer.output.Dispose();
         }
 
         static public async void Read(Dictionary<string, stateData> historicalData)

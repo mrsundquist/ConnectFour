@@ -21,6 +21,7 @@ namespace ConnectFour
         }
 
         Board theGame;
+        bool GodPlayer = false;
 
         private void StartGame(object sender, TappedRoutedEventArgs e)
         {
@@ -37,6 +38,7 @@ namespace ConnectFour
                 computerScore.BorderBrush = new SolidColorBrush(Colors.Black);
                 playerScore.BorderBrush = new SolidColorBrush(Colors.DarkRed);
             }
+            if (GodMode.IsOn) FirstPlayer.IsOn = true;
             if (!FirstPlayer.IsOn)
             {
                 theGame.computeChoice();
@@ -69,74 +71,110 @@ namespace ConnectFour
 
         private async void playerInput(object sender, TappedRoutedEventArgs e)
         {
-            int column = Convert.ToInt32(((AppBarButton)sender).Tag); // tag holds column number
-            if (theGame.placePlayerChecker(column)) // returns true if checker placed
+            if (GodMode.IsOn) playerInputGodMode(sender, e);
+            else
             {
-                log.Text += ("Player:   Column " + theGame.getLastColumn() + "\n");
-
-                //check for win
-                if (theGame.checkPlayerWin())
+                int column = Convert.ToInt32(((AppBarButton)sender).Tag); // tag holds column number
+                if (theGame.placePlayerChecker(column)) // returns true if checker placed
                 {
-                    log.Text += "\n<--PLAYER WINS-->";
-                    playerScore.Text = (Convert.ToInt32(playerScore.Text) + 1).ToString();
-                    unhideOptions();
-                }
-
-                else if (theGame.checkCats())
-                {
-                    log.Text += "\n<--CATS GAME-->";
-                    unhideOptions();
-                }
-
-                else
-                {
-                    //computer goes
-                    await Task.Delay(175);
-                    theGame.computeChoice();
-                    log.Text += ("Computer: Column " + theGame.getLastColumn() + "\n");
+                    log.Text += ("Player:   Column " + theGame.getLastColumn() + "\n");
 
                     //check for win
-                    if (theGame.checkComputerWin())
+                    if (theGame.checkPlayerWin())
                     {
-                        log.Text += "\n<--COMPUTER WINS-->";
-                        computerScore.Text = (Convert.ToInt32(computerScore.Text) + 1).ToString();
+                        log.Text += "\n<--PLAYER WINS-->";
+                        playerScore.Text = (Convert.ToInt32(playerScore.Text) + 1).ToString();
                         unhideOptions();
                     }
 
                     else if (theGame.checkCats())
                     {
-                        log.Text += "\n\n<--CATS GAME-->";
+                        log.Text += "\n<--CATS GAME-->";
                         unhideOptions();
+                    }
+
+                    else
+                    {
+                        //computer goes
+                        await Task.Delay(175);
+                        theGame.computeChoice();
+                        log.Text += ("Computer: Column " + theGame.getLastColumn() + "\n");
+
+                        //check for win
+                        if (theGame.checkComputerWin())
+                        {
+                            log.Text += "\n<--COMPUTER WINS-->";
+                            computerScore.Text = (Convert.ToInt32(computerScore.Text) + 1).ToString();
+                            unhideOptions();
+                        }
+
+                        else if (theGame.checkCats())
+                        {
+                            log.Text += "\n\n<--CATS GAME-->";
+                            unhideOptions();
+                        }
                     }
                 }
             }
         }
 
+        private async void playerInputGodMode(object sender, TappedRoutedEventArgs e)
+        {
+            int column = Convert.ToInt32(((AppBarButton)sender).Tag); // tag holds column number
+            GodPlayer = !GodPlayer;
+
+            if (GodPlayer)
+            {
+                if (theGame.placePlayerChecker(column, false)) // returns true if checker placed
+                {
+                    log.Text += ("Player:   Column " + theGame.getLastColumn() + "\n");
+                }
+            }
+            else
+            {
+                if (theGame.placePlayerChecker(column, true)) // returns true if checker placed
+                {
+                    log.Text += ("Player:   Column " + theGame.getLastColumn() + "\n");
+                }
+            }
+
+            //check for win
+            if (theGame.checkPlayerWin() || theGame.checkComputerWin())
+            {
+                log.Text += "\n<--PLAYER WINS-->";
+                playerScore.Text = (Convert.ToInt32(playerScore.Text) + 1).ToString();
+                unhideOptions();
+            }
+
+            else if (theGame.checkCats())
+            {
+                log.Text += "\n<--CATS GAME-->";
+                unhideOptions();
+            }
+        }
+
         private async void CollectData(object sender, TappedRoutedEventArgs e)
         {
+            theGame = new Board(true, true, 2, YellowSquare, false); // preload the data to not affect the time
             Stopwatch timer = new Stopwatch();
             timer.Start();
-            for (int numGames = 1; numGames <= 100; numGames++)
+            for (int numGames = 1; numGames <= 15; numGames++)
             {
 
-                if (numGames % 25 == 0)
-                {
-                    theGame = new Board(true, true, 2, YellowSquare, true);
-                    log.Text = "Game: " + numGames.ToString() + "\n";
-                }
+                if (numGames % 5 == 0) theGame = new Board(true, true, 2, YellowSquare, true);
                 else theGame = new Board(true, true, 2, YellowSquare, false);
                 bool computerGoing = true;
-                do
-                {
-                    theGame.computeChoice(computerGoing);
-                    computerGoing = !computerGoing;
-                    await Task.Delay(5);
-                } while (!(theGame.checkComputerWin() || theGame.checkComputerWin(false) || theGame.checkCats()));
+                    do
+                    {
+                        theGame.computeChoice(computerGoing);
+                        computerGoing = !computerGoing;
+                        await Task.Delay(1);
 
+                    } while (!(theGame.checkComputerWin() || theGame.checkComputerWin(false) || theGame.checkCats()));
             }
             timer.Stop();
             TimeSpan ts = timer.Elapsed;
-            string elapsedTime = String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3.00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
             log.Text += "RunTime: " + elapsedTime + "\n";
         }
     }

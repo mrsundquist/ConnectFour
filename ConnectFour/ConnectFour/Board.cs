@@ -67,13 +67,16 @@ namespace ConnectFour
             return shadowBoard;
         }
 
-        public bool placePlayerChecker(int column)
+        public bool placePlayerChecker(int column, bool godMode = false)
         {
             if (!this.gameOver)
             {
+                Checker color = this.playerColor;
+                if (godMode) color = this.computerColor;
+               
                 lastColumn = column;
-                bool validMove = placeChecker(column, playerColor, this.theBoard);
-                gameStates.Add(getState(computerColor));
+                bool validMove = placeChecker(column, color, this.theBoard);
+                gameStates.Add(getState(color));
                 return validMove;
             }
             else

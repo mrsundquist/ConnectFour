@@ -14,7 +14,8 @@
             <Slider x:Name="Difficulty" Width="150" Maximum="3" Minimum="1" LargeChange="1" Value="1" Header="Difficulty" Height="100"/>
             <AppBarButton x:Name="Start" HorizontalAlignment="Stretch" Icon="Play" Label="Start" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="StartGame"/>
             <AppBarButton x:Name="DataBuild" HorizontalAlignment="Stretch" Icon="Repair" Label="Data Collect" VerticalAlignment="Stretch" Width="100" Tapped="CollectData"/>
-            <AppBarButton x:Name="Reset" HorizontalAlignment="Stretch" Icon="Refresh" Label="Reset" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="reset" Margin="516,0,0,0"/>
+            <ToggleSwitch x:Name="GodMode" Header="God Mode" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200" Margin="316,0,0,0"/>
+            <AppBarButton x:Name="Reset" HorizontalAlignment="Stretch" Icon="Refresh" Label="Reset" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="reset" Margin="0"/>
         </StackPanel>
         <StackPanel x:Name="Labels" Height="30" Orientation="Horizontal" Visibility="Collapsed">
             <TextBlock TextWrapping="Wrap" Text="A" Width="111" Height="30" FontSize="24" TextAlignment="Center" Margin="294,0,0,0"/>
