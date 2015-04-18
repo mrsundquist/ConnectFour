@@ -15,20 +15,22 @@ namespace ConnectFour
         static Stream input;
         static StreamWriter outputStream;
         static StreamReader inputStream;
+        static bool initialized = false;
 
         static public async void Write(string[] theData)
         {
-            Writer.output = await Writer.folder.OpenStreamForWriteAsync("ConnectFourData.txt", CreationCollisionOption.OpenIfExists);
-            Writer.outputStream = new StreamWriter(output);
+            if (!initialized)
+            {
+                Writer.output = await Writer.folder.OpenStreamForWriteAsync("ConnectFourData.txt", CreationCollisionOption.OpenIfExists);
+                Writer.outputStream = new StreamWriter(output);
+                initialized = true;
+            }
 
             foreach (string record in theData)
             {
                 Writer.outputStream.Write(record);
                 Writer.outputStream.WriteLine();
             }
-
-            Writer.outputStream.Dispose();
-            Writer.output.Dispose();
         }
 
         static public async void Read(Dictionary<string, stateData> historicalData)

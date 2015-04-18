@@ -53,7 +53,7 @@ namespace ConnectFour
 
         private void endGame(Checker result)
         {
-            lock (this)
+            //lock (this)
             {
                 int score = 0; // computer lose
                 if (result == computerColor) score += 2; // computer win

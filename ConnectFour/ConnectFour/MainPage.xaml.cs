@@ -153,23 +153,24 @@ namespace ConnectFour
             }
         }
 
-        private async void CollectData(object sender, TappedRoutedEventArgs e)
+        private void CollectData(object sender, TappedRoutedEventArgs e)
         {
-            theGame = new Board(true, true, 2, YellowSquare, false); // preload the data to not affect the time
+            int playGames = int.MaxValue;
+            int saveRate = 10000;
+
             Stopwatch timer = new Stopwatch();
             timer.Start();
-            for (int numGames = 1; numGames <= 3; numGames++)
+            for (int numGames = 1; numGames <= playGames; numGames++)
             {
 
-                if (numGames % 1 == 0) theGame = new Board(true, true, 2, YellowSquare, true);
+                if (numGames % saveRate == 0) 
+                    theGame = new Board(true, true, 2, YellowSquare, true);
                 else theGame = new Board(true, true, 2, YellowSquare, false);
                 bool computerGoing = true;
                     do
                     {
                         theGame.computeChoice(computerGoing);
                         computerGoing = !computerGoing;
-                        await Task.Delay(1);
-
                     } while (!(theGame.checkComputerWin() || theGame.checkComputerWin(false) || theGame.checkCats()));
             }
             timer.Stop();
