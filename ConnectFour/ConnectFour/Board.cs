@@ -139,39 +139,85 @@ namespace ConnectFour
             bool validChoice = false;
 
             if (this.difficulty >= 2)
-            {
                 //try for immediate win!
-                int winningColumn = connectFour(color);
-                if (winningColumn > -1)
-                    validChoice = placeComputerChecker(winningColumn, color);
+                validChoice = attemptConnectFour(color);
 
+            if (!validChoice && this.difficulty >= 3)
                 //try for immediate block
-                if (!validChoice)
-                {
-                    int blockingColumn = connectFour(offColor);
-                    if (blockingColumn > -1)
-                        validChoice = placeComputerChecker(blockingColumn, color);
-                }
-            }
+                validChoice = attemptBlockFour(offColor, color);
 
-            if (this.difficulty >= 3)
-            {
-                //try for historically smart choice
-                if (!validChoice)
-                {
-                    int goodChoice = powerPlay();
-                    if (goodChoice > -1)
-                        validChoice = placeComputerChecker(goodChoice, color);
-                }
-            }
+            if (!validChoice && this.difficulty >= 5)
+                //choose a powerful position based on history (and try for no set up)
+                validChoice = attemptPowerPlay(color);
 
-            //settle for a random choice
+            if (!validChoice && this.difficulty >= 4)
+                //prevent setting other player up to connect four
+                validChoice = attemptNoSetup(color);
+
+            if (!validChoice && this.difficulty >= 1)
+                //choose a position not too far from current checkers
+                validChoice = attemptPlayClose(color);
+
             if (!validChoice)
             {
-                do { validChoice = placeComputerChecker(chooseRandom(), color); }
-                while (!validChoice);
+                //choose a random column
+                attemptChooseRandom(color);
             }
         }
+
+        private bool attemptConnectFour(Checker color)
+        {
+            int winningColumn = connectFour(color);
+            if (winningColumn > -1)
+                return placeComputerChecker(winningColumn, color);
+            return false;
+        }
+
+        private bool attemptBlockFour(Checker offColor, Checker color)
+        {
+            int blockingColumn = connectFour(offColor);
+            if (blockingColumn > -1)
+                return placeComputerChecker(blockingColumn, color);
+            return false;
+        }
+
+        private bool attemptNoSetup(Checker color)
+        {
+            //not implemented
+
+            return false;
+        }
+
+        private bool attemptPowerPlay(Checker color)
+        {
+            //not implemented
+
+            //please implement no set-up into powerplay
+            //e.g., choose top state (if over .50), if set up, choose next,
+            //continue for each 7 columns until under .50 or no set up
+
+            //int goodChoice = powerPlay();
+            //if (goodChoice > -1)
+            //    return placeComputerChecker(goodChoice, color);
+            return false;
+        }
+
+        private bool attemptPlayClose(Checker color)
+        {
+            return playClose(color);
+        }
+
+        private bool attemptChooseRandom(Checker color)
+        {
+            bool validChoice = false;
+            do
+            {
+                validChoice = placeComputerChecker(chooseRandom(), color);
+            }
+            while (!validChoice);
+            return validChoice;
+        }
+
 
         public bool checkPlayerWin()
         {

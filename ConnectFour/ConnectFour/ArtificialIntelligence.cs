@@ -110,5 +110,56 @@ namespace ConnectFour
 
             return chooseRandom(); // remove after implementation
         }
+
+        private bool playClose(Checker color)
+        {
+            int[] columnCounts = new int[7];
+            for (int col = 0; col < 7; col++)
+            {
+                for (int row = 0; row < 6; row++)
+                {
+                    if (this.theBoard[row, col] == color)
+                        columnCounts[col]++;
+                }
+            }
+
+            int[] powerSections = new int[5]; // sec 0 represent cols A-C, 1 is B-D, etc
+            for (int sec = 0; sec < 5; sec++)
+            {
+                for (int offset = 0; offset < 3; offset++)
+                {
+                    powerSections[sec] += columnCounts[sec+offset];
+                }
+            }
+            
+            if (powerSections.Max() == 0)
+                return false; // can't choose on first turn
+            
+            //choose power column, starting from middle
+            int powerColumn = 3;
+            if (powerSections[2] == powerSections.Max())
+                powerColumn = 3;
+            else if (powerSections[1] == powerSections.Max())
+                powerColumn = 2;
+            else if (powerSections[3] == powerSections.Max())
+                powerColumn = 4;
+            else if (powerSections[0] == powerSections.Max())
+                powerColumn = 1;
+            else if (powerSections[4] == powerSections.Max())
+                powerColumn = 5;
+
+            int powerRangeMin = (powerColumn - 2 < 0) ? (0) : (powerColumn - 2);
+            int powerRangeMax = (powerColumn + 2 > 6) ? (6) : (powerColumn + 2);
+            int tries = 0;
+            bool validChoice = false;
+            int columnChoice = -1;
+            do
+            {
+                columnChoice = rnd.Next(powerRangeMin, powerRangeMax+1);
+                validChoice = placeComputerChecker(columnChoice, color);
+            }
+            while (tries < 15 && !validChoice); // try 15 times to get a random col in powersection
+            return validChoice;
+        }
     }
 }

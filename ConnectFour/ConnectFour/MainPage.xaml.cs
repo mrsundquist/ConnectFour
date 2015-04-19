@@ -66,7 +66,7 @@ namespace ConnectFour
             log.Text = "";
             FirstPlayer.IsOn = false;
             ComputerColor.IsOn = false;
-            Difficulty.Value = 1;
+            Difficulty.Value = 0;
         }
 
         private async void playerInput(object sender, TappedRoutedEventArgs e)
@@ -178,7 +178,7 @@ namespace ConnectFour
 
         private void automate(bool writeData = false)
         {
-            theGame = new Board(true, true, 2, YellowSquare, writeData);
+            theGame = new Board(true, true, 4, YellowSquare, writeData);
             bool computerGoing = true;
             do
             {

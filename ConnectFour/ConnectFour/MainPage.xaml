@@ -12,7 +12,7 @@
             <ToggleSwitch x:Name="GodMode" Header="Two Player" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200" Margin="0"/>
             <ToggleSwitch x:Name="FirstPlayer" Header="First Player" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="100" OffContent="Computer" OnContent="Player" Width="200"/>
             <ToggleSwitch x:Name="ComputerColor" Header="Computer Color" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200" Height="100" OffContent="Black" OnContent="Red"/>
-            <Slider x:Name="Difficulty" Width="150" Maximum="3" Minimum="1" LargeChange="1" Value="1" Header="Difficulty" Height="100"/>
+            <Slider x:Name="Difficulty" Width="150" Maximum="5" LargeChange="1" Header="Difficulty" Height="100"/>
             <AppBarButton x:Name="Start" HorizontalAlignment="Stretch" Icon="Play" Label="Start" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="StartGame"/>
             <AppBarButton x:Name="DataBuild" HorizontalAlignment="Stretch" Icon="Repair" Label="Data Collect" VerticalAlignment="Stretch" Width="100" Tapped="CollectData"/>
             <AppBarButton x:Name="Reset" HorizontalAlignment="Stretch" Icon="Refresh" Label="Reset" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="reset" Margin="316,0,0,0"/>
