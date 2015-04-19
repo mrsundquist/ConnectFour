@@ -13,11 +13,10 @@ namespace ConnectFour
     public partial class Board
     {
         static bool firstTime = true;
-        static Dictionary<string, stateData> historicalData;
+       // static Dictionary<string, stateData> historicalData;
         HashSet<string> gameStates;
         Random rnd;
         static List<string> dataList;
-
 
         private string getState(Checker color)
         {
@@ -53,13 +52,10 @@ namespace ConnectFour
 
         private void endGame(Checker result)
         {
-            //lock (this)
             {
                 int score = 0; // computer lose
                 if (result == computerColor) score += 2; // computer win
                 if (result == Checker.empty) score += 1; // tie
-
-                string[] data = new string[gameStates.Count];
 
                 foreach (string state in gameStates)
                 {
@@ -72,7 +68,7 @@ namespace ConnectFour
 
                     if (result.ToString() == colorString) record.numWins += score;
                     else record.numWins += (2 - score); // 0 if comp won, 1 if tie, 2 if comp lost
-                    historicalData[saveStateString] = record;
+                   // historicalData[saveStateString] = record;
 
                     string recordString = null;
                     recordString = saveStateString + " " + record.numPlays.ToString() + " " + record.numWins.ToString();

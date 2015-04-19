@@ -155,28 +155,36 @@ namespace ConnectFour
 
         private void CollectData(object sender, TappedRoutedEventArgs e)
         {
-            int playGames = int.MaxValue;
-            int saveRate = 10000;
+            int playGames = 300;
+            int saveRate = 300;
 
             Stopwatch timer = new Stopwatch();
             timer.Start();
             for (int numGames = 1; numGames <= playGames; numGames++)
             {
-
-                if (numGames % saveRate == 0) 
-                    theGame = new Board(true, true, 2, YellowSquare, true);
-                else theGame = new Board(true, true, 2, YellowSquare, false);
-                bool computerGoing = true;
-                    do
-                    {
-                        theGame.computeChoice(computerGoing);
-                        computerGoing = !computerGoing;
-                    } while (!(theGame.checkComputerWin() || theGame.checkComputerWin(false) || theGame.checkCats()));
-            }
+                bool writeData = false;
+                if (numGames % saveRate == 0)
+                    writeData = true;
+                automate(writeData);
+            }  
             timer.Stop();
             TimeSpan ts = timer.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+            log.Text += "# Games: " + playGames.ToString() + "\n";
             log.Text += "RunTime: " + elapsedTime + "\n";
+            double gpms = ((ts.Hours * 60 * 60 * 1000) + (ts.Minutes * 60 * 1000) + (ts.Seconds * 1000) + (ts.Milliseconds)) / playGames;
+            log.Text += "Ms/game: " + gpms.ToString() + "\n\n";
+        }
+
+        private void automate(bool writeData = false)
+        {
+            theGame = new Board(true, true, 2, YellowSquare, writeData);
+            bool computerGoing = true;
+            do
+            {
+                theGame.computeChoice(computerGoing);
+                computerGoing = !computerGoing;
+            } while (!(theGame.checkComputerWin() || theGame.checkComputerWin(false) || theGame.checkCats()));
         }
     }
 }

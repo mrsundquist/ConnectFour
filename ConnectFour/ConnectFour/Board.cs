@@ -21,6 +21,7 @@ namespace ConnectFour
         int lastColumn;
         bool dataRecord;
 
+       
         public Board(bool computerFirst, bool computerBlack, int difficulty, StackPanel UIBoard, bool dataRecord = false)
         {
             this.computerFirst = computerFirst;
@@ -34,9 +35,9 @@ namespace ConnectFour
             this.gameStates = new HashSet<string>();
             if (firstTime)
             {
-                historicalData = new Dictionary<string, stateData>();
+                //historicalData = new Dictionary<string, stateData>();
                 //Writer.Read(historicalData);
-                dataList = new List<string>();
+                Board.dataList = new List<string>();
                 firstTime = false;
             }
             this.dataRecord = dataRecord;
