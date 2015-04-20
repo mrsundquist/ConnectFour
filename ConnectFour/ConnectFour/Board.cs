@@ -88,7 +88,7 @@ namespace ConnectFour
             {
                 lastColumn = column;
                 bool validMove = placeChecker(column, color, this.theBoard);
-                gameStates.Add(getState(color));
+                gameStates.Add(getState(color)); // add historical state data
                 return validMove;
             }
             else
@@ -109,12 +109,20 @@ namespace ConnectFour
             return false;
         }
 
-        private void colorChecker(int row, int column, Checker color)
+        private void colorChecker(int row, int column, Checker color, bool winning = false)
         {
             SolidColorBrush checkerColor;
-            if (color == Checker.red) checkerColor = new SolidColorBrush(Colors.DarkRed);
-            else if (color == Checker.black) checkerColor = new SolidColorBrush(Colors.Black);
-            else checkerColor = new SolidColorBrush(Color.FromArgb(255, 77, 77, 65));
+            if (!winning)
+            {
+                if (color == Checker.red) checkerColor = new SolidColorBrush(Colors.DarkRed);
+                else if (color == Checker.black) checkerColor = new SolidColorBrush(Colors.Black);
+                else checkerColor = new SolidColorBrush(Color.FromArgb(255, 77, 77, 65));
+            }
+            else
+            {
+                if (color == Checker.red) checkerColor = new SolidColorBrush(Colors.IndianRed);
+                else checkerColor = new SolidColorBrush(Colors.DimGray);
+            }
 
             //find the current checker
             UIElementCollection rows = UIBoard.Children;
@@ -204,7 +212,10 @@ namespace ConnectFour
 
         private bool attemptPlayClose(Checker color)
         {
-            return playClose(color);
+            int closeColumn = playClose(color);
+            if (closeColumn > -1)
+                return placeComputerChecker(closeColumn, color);
+            return false;
         }
 
         private bool attemptChooseRandom(Checker color)
@@ -217,8 +228,7 @@ namespace ConnectFour
             while (!validChoice);
             return validChoice;
         }
-
-
+        
         public bool checkPlayerWin()
         {
             return checkWin(playerColor, this.theBoard);
@@ -239,8 +249,8 @@ namespace ConnectFour
         private bool checkWin(Checker color, Checker[,] gameBoard, bool peek = false)
         {
             bool win = false;
-            win = (checkHorizontal(color, gameBoard) || checkVertical(color, gameBoard) ||
-                checkDiagonal1(color, gameBoard) || checkDiagonal2(color, gameBoard));
+            win = (checkHorizontal(color, gameBoard, peek) || checkVertical(color, gameBoard, peek) ||
+                checkDiagonal1(color, gameBoard, peek) || checkDiagonal2(color, gameBoard, peek));
             if (!peek)
             {
                 this.gameOver = win;
@@ -249,7 +259,7 @@ namespace ConnectFour
             return win;
         }
 
-        private bool checkHorizontal(Checker color, Checker[,] gameBoard)
+        private bool checkHorizontal(Checker color, Checker[,] gameBoard, bool peek = false)
         {
             for (int row = 0; row < 6; row++)
             {
@@ -260,6 +270,9 @@ namespace ConnectFour
                         gameBoard[row, column + 2] == color &&
                         gameBoard[row, column + 3] == color)
                     {
+                        if (!peek)
+                            for (int c = 0; c < 4; c++)
+                                colorChecker(row, column + c, color, true);
                         return true;
                     }
                 }
@@ -267,7 +280,7 @@ namespace ConnectFour
             return false;
         }
 
-        private bool checkVertical(Checker color, Checker[,] gameBoard)
+        private bool checkVertical(Checker color, Checker[,] gameBoard, bool peek = false)
         {
             for (int row = 0; row < 3; row++)
             {
@@ -278,6 +291,11 @@ namespace ConnectFour
                         gameBoard[row + 2, column] == color &&
                         gameBoard[row + 3, column] == color)
                     {
+                        if (!peek)
+                        {
+                            for (int r = 0; r < 4; r++)
+                                colorChecker(row + r, column, color, true);
+                        }
                         return true;
                     }
                 }
@@ -285,7 +303,7 @@ namespace ConnectFour
             return false;
         }
 
-        private bool checkDiagonal1(Checker color, Checker[,] gameBoard)
+        private bool checkDiagonal1(Checker color, Checker[,] gameBoard, bool peek = false)
         {
             for (int row = 0; row < 3; row++)
             {
@@ -296,6 +314,11 @@ namespace ConnectFour
                         gameBoard[row + 2, column + 2] == color &&
                         gameBoard[row + 3, column + 3] == color)
                     {
+                        if (!peek)
+                        {
+                            for (int r = 0; r < 4; r++)
+                                colorChecker(row + r, column + r, color, true);
+                        }
                         return true;
                     }
                 }
@@ -303,7 +326,7 @@ namespace ConnectFour
             return false;
         }
 
-        private bool checkDiagonal2(Checker color, Checker[,] gameBoard)
+        private bool checkDiagonal2(Checker color, Checker[,] gameBoard, bool peek = false)
         {
             for (int row = 3; row < 6; row++)
             {
@@ -314,6 +337,11 @@ namespace ConnectFour
                         gameBoard[row - 2, column + 2] == color &&
                         gameBoard[row - 3, column + 3] == color)
                     {
+                        if (!peek)
+                        {
+                            for (int r = 0; r < 4; r++)
+                                colorChecker(row - r, column + r, color, true);
+                        }
                         return true;
                     }
                 }
@@ -359,5 +387,6 @@ namespace ConnectFour
                     return "";
             }
         }
+
     }
 }

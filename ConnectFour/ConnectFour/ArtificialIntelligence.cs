@@ -111,7 +111,7 @@ namespace ConnectFour
             return chooseRandom(); // remove after implementation
         }
 
-        private bool playClose(Checker color)
+        private int playClose(Checker color)
         {
             int[] columnCounts = new int[7];
             for (int col = 0; col < 7; col++)
@@ -133,7 +133,7 @@ namespace ConnectFour
             }
             
             if (powerSections.Max() == 0)
-                return false; // can't choose on first turn
+                return -1; // can't choose on first turn
             
             //choose power column, starting from middle
             int powerColumn = 3;
@@ -150,16 +150,17 @@ namespace ConnectFour
 
             int powerRangeMin = (powerColumn - 2 < 0) ? (0) : (powerColumn - 2);
             int powerRangeMax = (powerColumn + 2 > 6) ? (6) : (powerColumn + 2);
+            Checker[,] shadowBoard = this.shadow();
             int tries = 0;
             bool validChoice = false;
             int columnChoice = -1;
             do
             {
                 columnChoice = rnd.Next(powerRangeMin, powerRangeMax+1);
-                validChoice = placeComputerChecker(columnChoice, color);
+                validChoice = placeChecker(columnChoice, color, shadowBoard, true);
             }
             while (tries < 15 && !validChoice); // try 15 times to get a random col in powersection
-            return validChoice;
+            return columnChoice;
         }
     }
 }
