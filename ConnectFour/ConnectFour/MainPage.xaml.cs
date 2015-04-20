@@ -186,5 +186,15 @@ namespace ConnectFour
                 computerGoing = !computerGoing;
             } while (!(theGame.checkComputerWin() || theGame.checkComputerWin(false) || theGame.checkCats()));
         }
+
+        private void UndoLastMove(object sender, TappedRoutedEventArgs e)
+        {
+            theGame.undo();
+        }
+
+        private void Exit(object sender, TappedRoutedEventArgs e)
+        {
+            App.Current.Exit();
+        }
     }
 }

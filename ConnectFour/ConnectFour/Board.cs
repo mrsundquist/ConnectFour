@@ -20,6 +20,7 @@ namespace ConnectFour
         bool gameOver;
         int lastColumn;
         bool dataRecord;
+        Checker[,] undoBoard;
 
        
         public Board(bool computerFirst, bool computerBlack, int difficulty, StackPanel UIBoard, bool dataRecord = false)
@@ -51,6 +52,7 @@ namespace ConnectFour
                     colorChecker(row, column, Checker.empty);
                 }
             }
+            this.undoBoard = copyBoard(this.theBoard);
         }
 
         private Checker[,] shadow() // returns copy of the logical board, not UI board
@@ -79,6 +81,7 @@ namespace ConnectFour
                 if (godMode) color = this.computerColor;
                
                 lastColumn = column;
+                undoBoard = copyBoard(this.theBoard);
                 bool validMove = placeChecker(column, color, this.theBoard);
                 gameStates.Add(getState(color));
                 return validMove;
@@ -391,6 +394,18 @@ namespace ConnectFour
                     return "G";
                 default:
                     return "";
+            }
+        }
+
+        public void undo()
+        {
+            this.theBoard = undoBoard;
+            for (int row = 5; row >= 0; row--)
+            {
+                for (int col = 0; col < 7; col++)
+                {
+                    colorChecker(row, col, theBoard[row, col]);
+                }
             }
         }
     }

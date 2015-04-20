@@ -6,6 +6,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="Quit" Icon="Cancel" Label="Exit" Tapped="Exit"/>
+            </CommandBar.SecondaryCommands>
+            <AppBarButton x:Name="Undo" Icon="Undo" Label="Undo" Tapped="UndoLastMove"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 
     <StackPanel x:Name="MainBackground" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel x:Name="Options" Height="100" Orientation="Horizontal">
