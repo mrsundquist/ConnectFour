@@ -89,11 +89,11 @@ namespace ConnectFour
             return rnd.Next(0, 7);
         }
 
-        private int connectFour(Checker color)
+        private int connectFour(Checker color, Checker[,] board)
         {
             for (int testColumn = 0; testColumn < 7; testColumn++)
             {
-                Checker[,] shadowBoard = this.shadow();
+                Checker[,] shadowBoard = copyBoard(board);
                 if (placeChecker(testColumn, color, shadowBoard, true)) // if a legal move
                 {
                     if (checkWin(color, shadowBoard, true)) // this is a winning move!
@@ -113,6 +113,7 @@ namespace ConnectFour
 
         private int playClose(Checker color)
         {
+            if (rnd.Next(0, 2) == 0) return -1; //half the time don't do this b/c it can get locked in
             int[] columnCounts = new int[7];
             for (int col = 0; col < 7; col++)
             {
@@ -159,7 +160,41 @@ namespace ConnectFour
                 columnChoice = rnd.Next(powerRangeMin, powerRangeMax+1);
                 validChoice = placeChecker(columnChoice, color, shadowBoard, true);
             }
-            while (tries < 15 && !validChoice); // try 15 times to get a random col in powersection
+            while (tries++ < 20 && !validChoice); // try 20 times to get a random col in powersection
+            return columnChoice;
+        }
+
+        private int noSetup(Checker color, Checker opponentColor)
+        {
+            int tries = 0;
+            bool validChoice = false;
+            int columnChoice = -1;
+            do
+            {
+                Checker[,] shadowBoard = this.shadow();
+                int possibleColumn = playClose(color);
+                if (possibleColumn < 0) break;
+                if (!placeChecker(possibleColumn, color, shadowBoard, true)) break;// try it out
+                if (connectFour(opponentColor, shadowBoard) < 0) //opponent cannont win on this move
+                {
+                    columnChoice = possibleColumn;
+                    validChoice = true;
+                }
+            }
+            while (tries++ < 25 && !validChoice); //try 25 times to get a safe, close qualified column
+
+            tries = 0;
+            while (tries++ < 35 && !validChoice) //try 35 times to get a safe, random column
+            {
+                Checker[,] shadowBoard = this.shadow();
+                int possibleColumn = chooseRandom();
+                if (!placeChecker(possibleColumn, color, shadowBoard, true)) break;//try it out
+                if (connectFour(opponentColor, shadowBoard) < 0) //opponent cannot win on this move
+                {
+                    columnChoice = possibleColumn;
+                    validChoice = true;
+                }
+            }
             return columnChoice;
         }
     }

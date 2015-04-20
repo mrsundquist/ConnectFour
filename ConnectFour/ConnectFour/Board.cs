@@ -55,12 +55,17 @@ namespace ConnectFour
 
         private Checker[,] shadow() // returns copy of the logical board, not UI board
         {
+            return copyBoard(this.theBoard);
+        }
+
+        private Checker[,] copyBoard(Checker[,] board)
+        {
             Checker[,] shadowBoard = new Checker[6, 7];
             for (int row = 0; row < 6; row++)
             {
                 for (int column = 0; column < 7; column++)
                 {
-                    shadowBoard[row, column] = this.theBoard[row, column];
+                    shadowBoard[row, column] = board[row, column];
                 }
             }
             return shadowBoard;
@@ -160,7 +165,7 @@ namespace ConnectFour
 
             if (!validChoice && this.difficulty >= 4)
                 //prevent setting other player up to connect four
-                validChoice = attemptNoSetup(color);
+                validChoice = attemptNoSetup(color, offColor);
 
             if (!validChoice && this.difficulty >= 1)
                 //choose a position not too far from current checkers
@@ -175,7 +180,7 @@ namespace ConnectFour
 
         private bool attemptConnectFour(Checker color)
         {
-            int winningColumn = connectFour(color);
+            int winningColumn = connectFour(color, this.shadow());
             if (winningColumn > -1)
                 return placeComputerChecker(winningColumn, color);
             return false;
@@ -183,16 +188,17 @@ namespace ConnectFour
 
         private bool attemptBlockFour(Checker offColor, Checker color)
         {
-            int blockingColumn = connectFour(offColor);
+            int blockingColumn = connectFour(offColor, this.shadow());
             if (blockingColumn > -1)
                 return placeComputerChecker(blockingColumn, color);
             return false;
         }
 
-        private bool attemptNoSetup(Checker color)
+        private bool attemptNoSetup(Checker color, Checker offColor)
         {
-            //not implemented
-
+            int safeColumn = noSetup(color, offColor);
+            if (safeColumn > -1)
+                return placeComputerChecker(safeColumn, color);
             return false;
         }
 
@@ -387,6 +393,5 @@ namespace ConnectFour
                     return "";
             }
         }
-
     }
 }
