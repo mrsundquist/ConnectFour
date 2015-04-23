@@ -400,6 +400,7 @@ namespace ConnectFour
                     colorChecker(row, col, theBoard[row, col]);
                 }
             }
+            gameOver = false;
         }
     }
 }

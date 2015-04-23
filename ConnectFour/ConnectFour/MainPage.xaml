@@ -6,26 +6,32 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Page.BottomAppBar>
-        <CommandBar>
-            <CommandBar.SecondaryCommands>
-                <AppBarButton x:Name="Quit" Icon="Cancel" Label="Exit" Tapped="Exit"/>
-            </CommandBar.SecondaryCommands>
-            <AppBarButton x:Name="Undo" Icon="Undo" Label="Undo" Tapped="UndoLastMove"/>
-        </CommandBar>
-    </Page.BottomAppBar>
+    <Page.TopAppBar>
+        <AppBar Height="100">
+            <Grid Height="100">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="869*"/>
+                    <ColumnDefinition Width="497*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleSwitch x:Name="GodMode" Header="Two Player" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200" Margin="0" Height="100" VerticalContentAlignment="Top"/>
+                    <ToggleSwitch x:Name="FirstPlayer" Header="First Player" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="100" OffContent="Computer" OnContent="Player" Width="200" Margin="0"/>
+                    <ToggleSwitch x:Name="ComputerColor" Header="Computer Color" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200" Height="100" OffContent="Black" OnContent="Red" Margin="0"/>
+                    <Slider x:Name="Difficulty" Width="200" Maximum="5" LargeChange="1" Header="Difficulty" Height="100" Value="5" Margin="0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal" Width="497">
+                    <AppBarButton x:Name="Start" HorizontalAlignment="Stretch" Icon="Play" Label="Start" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="StartGame" Margin="0"/>
+                    <AppBarButton x:Name="DataBuild" HorizontalAlignment="Stretch" Icon="Repair" Label="Data Collect" VerticalAlignment="Stretch" Width="100" Tapped="CollectData" Margin="0"/>
+                    <AppBarButton x:Name="Undo" Icon="Undo" Label="Undo" Tapped="UndoLastMove" Height="100" Margin="0,0,0,-88" Width="100"/>
+                    <AppBarButton x:Name="Reset" HorizontalAlignment="Stretch" Icon="Refresh" Label="Reset" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="reset" Margin="0"/>
+                    <AppBarButton x:Name="Quit" Icon="Cancel" Label="Exit" Tapped="Exit" Height="100" Margin="0,0,0,-88" Width="100"/>
+                </StackPanel>
+            </Grid>
+        </AppBar>
+    </Page.TopAppBar>
 
     <StackPanel x:Name="MainBackground" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel x:Name="Options" Height="100" Orientation="Horizontal">
-            <ToggleSwitch x:Name="GodMode" Header="Two Player" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200" Margin="0"/>
-            <ToggleSwitch x:Name="FirstPlayer" Header="First Player" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="100" OffContent="Computer" OnContent="Player" Width="200"/>
-            <ToggleSwitch x:Name="ComputerColor" Header="Computer Color" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200" Height="100" OffContent="Black" OnContent="Red"/>
-            <Slider x:Name="Difficulty" Width="150" Maximum="5" LargeChange="1" Header="Difficulty" Height="100"/>
-            <AppBarButton x:Name="Start" HorizontalAlignment="Stretch" Icon="Play" Label="Start" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="StartGame"/>
-            <AppBarButton x:Name="DataBuild" HorizontalAlignment="Stretch" Icon="Repair" Label="Data Collect" VerticalAlignment="Stretch" Width="100" Tapped="CollectData"/>
-            <AppBarButton x:Name="Reset" HorizontalAlignment="Stretch" Icon="Refresh" Label="Reset" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="reset" Margin="316,0,0,0"/>
-        </StackPanel>
-        <StackPanel x:Name="Labels" Height="30" Orientation="Horizontal" Visibility="Collapsed">
+        <StackPanel x:Name="Labels" Height="30" Orientation="Horizontal" Opacity="0.25">
             <TextBlock TextWrapping="Wrap" Text="A" Width="111" Height="30" FontSize="24" TextAlignment="Center" Margin="294,0,0,0"/>
             <TextBlock TextWrapping="Wrap" Text="B" Width="111" Height="30" FontSize="24" TextAlignment="Center"/>
             <TextBlock TextWrapping="Wrap" Text="C" Width="111" Height="30" FontSize="24" TextAlignment="Center"/>
@@ -34,44 +40,44 @@
             <TextBlock TextWrapping="Wrap" Text="F" Width="111" Height="30" FontSize="24" TextAlignment="Center"/>
             <TextBlock TextWrapping="Wrap" Text="G" Width="111" Height="30" FontSize="24" TextAlignment="Center"/>
         </StackPanel>
-        <StackPanel x:Name="UserInput" Height="70" Orientation="Horizontal" Visibility="Collapsed">
-            <AppBarButton x:Name="ChooseA" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Margin="294,0,0,0" Tapped="playerInput" Tag="0">
+        <StackPanel x:Name="UserInput" Height="70" Orientation="Horizontal">
+            <AppBarButton x:Name="ChooseA" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Margin="294,0,0,0" Tapped="playerInput" Tag="0" IsEnabled="False">
                 <AppBarButton.RenderTransform>
                     <CompositeTransform Rotation="180"/>
                 </AppBarButton.RenderTransform>
             </AppBarButton>
-            <AppBarButton x:Name="ChooseB" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="1">
+            <AppBarButton x:Name="ChooseB" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="1" IsEnabled="False">
                 <AppBarButton.RenderTransform>
                     <CompositeTransform Rotation="180"/>
                 </AppBarButton.RenderTransform>
             </AppBarButton>
-            <AppBarButton x:Name="ChooseC" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="2">
+            <AppBarButton x:Name="ChooseC" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="2" IsEnabled="False">
                 <AppBarButton.RenderTransform>
                     <CompositeTransform Rotation="180"/>
                 </AppBarButton.RenderTransform>
             </AppBarButton>
-            <AppBarButton x:Name="ChooseD" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="3">
+            <AppBarButton x:Name="ChooseD" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="3" IsEnabled="False">
                 <AppBarButton.RenderTransform>
                     <CompositeTransform Rotation="180"/>
                 </AppBarButton.RenderTransform>
             </AppBarButton>
-            <AppBarButton x:Name="ChooseE" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="4">
+            <AppBarButton x:Name="ChooseE" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="4" IsEnabled="False">
                 <AppBarButton.RenderTransform>
                     <CompositeTransform Rotation="180"/>
                 </AppBarButton.RenderTransform>
             </AppBarButton>
-            <AppBarButton x:Name="ChooseF" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="5">
+            <AppBarButton x:Name="ChooseF" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="5" IsEnabled="False">
                 <AppBarButton.RenderTransform>
                     <CompositeTransform Rotation="180"/>
                 </AppBarButton.RenderTransform>
             </AppBarButton>
-            <AppBarButton x:Name="ChooseG" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="6">
+            <AppBarButton x:Name="ChooseG" HorizontalAlignment="Stretch" Icon="Up" Label="" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5" Width="111" Height="70" Tapped="playerInput" Tag="6" IsEnabled="False">
                 <AppBarButton.RenderTransform>
                     <CompositeTransform Rotation="180"/>
                 </AppBarButton.RenderTransform>
             </AppBarButton>
         </StackPanel>
-        <Canvas x:Name="Board" Margin="0,0,100,0" Width="1366" Height="668" Background="#FF4D4D41">
+        <Canvas x:Name="Board" Width="1366" Height="668" Background="#FF4D4D41" Tapped="scoreReset">
             <StackPanel x:Name="YellowSquare" Background="#FFF0E84C" Height="666" Canvas.Left="294" Width="777">
                 <StackPanel x:Name="Row6" Height="111" Margin="0" Orientation="Horizontal">
                     <Border x:Name="A6" BorderBrush="#7F9B974C" BorderThickness="4" Width="111">
@@ -218,6 +224,7 @@
             <TextBlock Canvas.Left="1134" TextWrapping="Wrap" Text="Player:" Canvas.Top="351" Width="111" FontSize="22" Height="23"/>
             <TextBox x:Name="computerScore" Canvas.Left="1134" TextWrapping="Wrap" Canvas.Top="299" Width="111" Height="30" FontSize="20" IsReadOnly="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalContentAlignment="Top" FontFamily="Anonymous Pro" Text="0" Padding="10,3,10,0" MinHeight="2" MinWidth="0" TextAlignment="Right" Foreground="#FFEEDE9A" Background="{x:Null}"/>
             <TextBox x:Name="playerScore" Canvas.Left="1134" TextWrapping="Wrap" Canvas.Top="377" Width="111" Height="30" FontSize="20" IsReadOnly="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalContentAlignment="Top" FontFamily="Anonymous Pro" Text="0" Padding="10,3,10,0" MinHeight="2" MinWidth="0" TextAlignment="Right" Foreground="#FFEEDE9A" Background="{x:Null}"/>
+            <Button x:Name="ResetScore" Content="Reset Score" Canvas.Left="1183" Canvas.Top="425" Width="65" FontSize="10" FontWeight="Light" Padding="0"/>
         </Canvas>
     </StackPanel>
 </Page>

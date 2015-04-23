@@ -49,16 +49,26 @@ namespace ConnectFour
 
         private void hideOptions()
         {
-            Options.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            Labels.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            UserInput.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            Labels.Opacity = 100;
+            ChooseA.IsEnabled = true;
+            ChooseB.IsEnabled = true;
+            ChooseC.IsEnabled = true;
+            ChooseD.IsEnabled = true;
+            ChooseE.IsEnabled = true;
+            ChooseF.IsEnabled = true;
+            ChooseG.IsEnabled = true;
         }
 
         private void unhideOptions()
         {
-            Options.Visibility = Windows.UI.Xaml.Visibility.Visible;
-            Labels.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-            UserInput.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            Labels.Opacity = 25;
+            ChooseA.IsEnabled = false;
+            ChooseB.IsEnabled = false;
+            ChooseC.IsEnabled = false;
+            ChooseD.IsEnabled = false;
+            ChooseE.IsEnabled = false;
+            ChooseF.IsEnabled = false;
+            ChooseG.IsEnabled = false;
         }
 
         private void reset(object sender, TappedRoutedEventArgs e)
@@ -67,7 +77,7 @@ namespace ConnectFour
             log.Text = "";
             FirstPlayer.IsOn = false;
             ComputerColor.IsOn = false;
-            Difficulty.Value = 0;
+            Difficulty.Value = 5;
         }
 
         private async void playerInput(object sender, TappedRoutedEventArgs e)
@@ -83,14 +93,14 @@ namespace ConnectFour
                     //check for win
                     if (theGame.checkPlayerWin())
                     {
-                        log.Text += "\n<--PLAYER WINS-->";
+                        log.Text += "\n<--PLAYER WINS-->\n";
                         playerScore.Text = (Convert.ToInt32(playerScore.Text) + 1).ToString();
                         unhideOptions();
                     }
 
                     else if (theGame.checkCats())
                     {
-                        log.Text += "\n<--CATS GAME-->";
+                        log.Text += "\n<--CATS GAME-->\n";
                         unhideOptions();
                     }
 
@@ -104,14 +114,14 @@ namespace ConnectFour
                         //check for win
                         if (theGame.checkComputerWin())
                         {
-                            log.Text += "\n<--COMPUTER WINS-->";
+                            log.Text += "\n<--COMPUTER WINS-->\n";
                             computerScore.Text = (Convert.ToInt32(computerScore.Text) + 1).ToString();
                             unhideOptions();
                         }
 
                         else if (theGame.checkCats())
                         {
-                            log.Text += "\n\n<--CATS GAME-->";
+                            log.Text += "\n<--CATS GAME-->\n";
                             unhideOptions();
                         }
                     }
@@ -142,14 +152,14 @@ namespace ConnectFour
             //check for win
             if (theGame.checkPlayerWin() || theGame.checkComputerWin())
             {
-                log.Text += "\n<--PLAYER WINS-->";
+                log.Text += "\n<--PLAYER WINS-->\n";
                 playerScore.Text = (Convert.ToInt32(playerScore.Text) + 1).ToString();
                 unhideOptions();
             }
 
             else if (theGame.checkCats())
             {
-                log.Text += "\n<--CATS GAME-->";
+                log.Text += "\n<--CATS GAME-->\n";
                 unhideOptions();
             }
         }
@@ -196,11 +206,19 @@ namespace ConnectFour
         private void UndoLastMove(object sender, TappedRoutedEventArgs e)
         {
             theGame.undo();
+            hideOptions();
+            log.Text += "\n<--UNDO LAST 2 MOVES-->\n";
         }
 
         private void Exit(object sender, TappedRoutedEventArgs e)
         {
             App.Current.Exit();
+        }
+
+        private void scoreReset(object sender, TappedRoutedEventArgs e)
+        {
+            computerScore.Text = "0";
+            playerScore.Text = "0";
         }
     }
 }
