@@ -36,8 +36,8 @@ namespace ConnectFour
             this.gameStates = new HashSet<string>();
             if (firstTime)
             {
-                //historicalData = new Dictionary<string, stateData>();
-                //Writer.Read(historicalData);
+                historicalData = new Dictionary<string, stateData>();
+                Writer.Read(historicalData);
                 Board.dataList = new List<string>();
                 firstTime = false;
             }

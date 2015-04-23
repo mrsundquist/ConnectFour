@@ -18,6 +18,13 @@ namespace ConnectFour
         public MainPage()
         {
             this.InitializeComponent();
+            Loading.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            Progress.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            Progress.IsActive = true;
+            theGame = new Board(true, true, 0, YellowSquare); // load data on first created board
+            Progress.IsActive = false;
+            Progress.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            Loading.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
         }
 
         Board theGame;

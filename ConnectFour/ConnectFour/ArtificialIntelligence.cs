@@ -13,7 +13,7 @@ namespace ConnectFour
     public partial class Board
     {
         static bool firstTime = true;
-       // static Dictionary<string, stateData> historicalData;
+        static Dictionary<string, stateData> historicalData;
         HashSet<string> gameStates;
         Random rnd;
         static List<string> dataList;

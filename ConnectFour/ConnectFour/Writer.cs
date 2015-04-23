@@ -40,12 +40,16 @@ namespace ConnectFour
             string state;
             stateData record = new stateData();
 
-            Writer.input = await Writer.folder.OpenStreamForReadAsync("ConnectFourData.txt");
+            Writer.input = await Writer.folder.OpenStreamForReadAsync("ConnectFourData01");
+            //will need to change to all!
             Writer.inputStream = new StreamReader(input);
+            
 
             while ((dataLine = inputStream.ReadLine()) != null)
             {
                 dataParts = dataLine.Split(' ');
+                if (dataParts.Count() != 3) continue; //bad data record
+                
                 state = dataParts[0];
                 
                 record.numPlays = Convert.ToInt32(dataParts[1]);
