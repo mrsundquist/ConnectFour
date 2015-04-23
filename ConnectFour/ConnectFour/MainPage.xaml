@@ -23,8 +23,6 @@
             <Slider x:Name="Difficulty" Width="150" Maximum="5" LargeChange="1" Header="Difficulty" Height="100"/>
             <AppBarButton x:Name="Start" HorizontalAlignment="Stretch" Icon="Play" Label="Start" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="StartGame"/>
             <AppBarButton x:Name="DataBuild" HorizontalAlignment="Stretch" Icon="Repair" Label="Data Collect" VerticalAlignment="Stretch" Width="100" Tapped="CollectData"/>
-            <ProgressRing x:Name="Progress" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="100" Visibility="Collapsed"/>
-            <TextBlock x:Name="Loading" TextWrapping="Wrap" Text="Loading" Width="100" Height="100" Padding="25,45,0,0" Visibility="Collapsed"/>
             <AppBarButton x:Name="Reset" HorizontalAlignment="Stretch" Icon="Refresh" Label="Reset" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="reset" Margin="316,0,0,0"/>
         </StackPanel>
         <StackPanel x:Name="Labels" Height="30" Orientation="Horizontal" Visibility="Collapsed">

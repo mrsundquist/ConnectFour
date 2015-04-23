@@ -17,20 +17,23 @@ namespace ConnectFour
         HashSet<string> gameStates;
         Random rnd;
         static List<string> dataList;
+        bool dataRecord;
 
-        private string getState(Checker color)
+        private string getState(Checker color, Checker[,] board, bool incColor = true)
         {
+            Checker[,] currentBoard = copyBoard(board); 
+            
             string stateString = null;
             for (int column = 0; column < 7; column++)
             {
                 for (int row = 5; row > 2; row--)
                 {
-                    if (this.theBoard[row, column] == Checker.empty)
+                    if (currentBoard[row, column] == Checker.empty)
                     {
                         stateString += "^";
                         break;
                     }
-                    else if (this.theBoard[row, column] == color)
+                    else if (currentBoard[row, column] == color)
                     {
                         stateString += "s"; // 
                     }
@@ -45,8 +48,12 @@ namespace ConnectFour
                 }
 
             }
-            stateString += " ";
-            stateString += color.ToString();
+
+            if (incColor)
+            {
+                stateString += " ";
+                stateString += color.ToString();
+            }
             return stateString;
         }
 
@@ -105,10 +112,49 @@ namespace ConnectFour
             return -1; // no winning move
         }
 
-        private int powerPlay()
+        private int powerPlay(Checker color, Checker opponentColor)
         {
+            Dictionary<int, double> columnScores = new Dictionary<int,double>();
 
-            return chooseRandom(); // remove after implementation
+            for (int possibleColumn = 0; possibleColumn < 7; possibleColumn++)
+            {
+                Checker[,] shadowBoard = this.shadow();
+                if (!placeChecker(possibleColumn, color, shadowBoard, true)) // place column
+                    columnScores[possibleColumn] = 0; // this is not a valid move
+                else if ((connectFour(opponentColor, shadowBoard) >= 0)) //opponent could win on this move
+                    columnScores[possibleColumn] = 0;
+                else
+                {
+                    string possibleState = getState(color, shadowBoard, false);
+                    //stateData historicalRecord = historicalData[possibleState];
+                    stateData historicalRecord;
+                    if (historicalData.TryGetValue(possibleState, out historicalRecord))
+                    {
+                        double score = (double)historicalRecord.numWins / (double)historicalRecord.numPlays;
+                        columnScores[possibleColumn] = score;
+                    }
+                    else
+                    {
+                        columnScores[possibleColumn] = 1; // no record
+                    }
+                }
+            }
+
+            int returnColumn = -1;
+            double highScore = 0; // 1.0 is 50% win ratio
+            
+            int col = 0;
+            for (int i = 0; i < 7; i++)
+            {
+                if (columnScores[col] >= highScore)
+                {
+                    highScore = columnScores[col];
+                    returnColumn = col;
+                }
+                col = col + (int)Math.Pow(-1, i) * (6 - i); // col goes 0, 6, 1, 5, 2, 4, 3 (inside cols have priority in ties)
+            }
+            
+            return returnColumn;
         }
 
         private int playClose(Checker color)

@@ -19,7 +19,6 @@ namespace ConnectFour
         StackPanel UIBoard;
         bool gameOver;
         int lastColumn;
-        bool dataRecord;
         Checker[,] undoBoard;
 
        
@@ -41,7 +40,7 @@ namespace ConnectFour
                 Board.dataList = new List<string>();
                 firstTime = false;
             }
-            this.dataRecord = dataRecord;
+            this.dataRecord = dataRecord; // default is false - do not save data
 
             this.theBoard = new Checker[6, 7];
             for (int row = 0; row < 6; row++)
@@ -83,7 +82,7 @@ namespace ConnectFour
                 lastColumn = column;
                 undoBoard = copyBoard(this.theBoard);
                 bool validMove = placeChecker(column, color, this.theBoard);
-                gameStates.Add(getState(color));
+                gameStates.Add(getState(color, this.theBoard));
                 return validMove;
             }
             else
@@ -96,7 +95,7 @@ namespace ConnectFour
             {
                 lastColumn = column;
                 bool validMove = placeChecker(column, color, this.theBoard);
-                gameStates.Add(getState(color)); // add historical state data
+                gameStates.Add(getState(color, this.theBoard)); // add historical state data
                 return validMove;
             }
             else
@@ -164,7 +163,7 @@ namespace ConnectFour
 
             if (!validChoice && this.difficulty >= 5)
                 //choose a powerful position based on history (and try for no set up)
-                validChoice = attemptPowerPlay(color);
+                validChoice = attemptPowerPlay(color, offColor);
 
             if (!validChoice && this.difficulty >= 4)
                 //prevent setting other player up to connect four
@@ -205,17 +204,11 @@ namespace ConnectFour
             return false;
         }
 
-        private bool attemptPowerPlay(Checker color)
+        private bool attemptPowerPlay(Checker color, Checker offColor)
         {
-            //not implemented
-
-            //please implement no set-up into powerplay
-            //e.g., choose top state (if over .50), if set up, choose next,
-            //continue for each 7 columns until under .50 or no set up
-
-            //int goodChoice = powerPlay();
-            //if (goodChoice > -1)
-            //    return placeComputerChecker(goodChoice, color);
+            int goodChoice = powerPlay(color, offColor);
+            if (goodChoice > -1)
+                return placeComputerChecker(goodChoice, color);
             return false;
         }
 
