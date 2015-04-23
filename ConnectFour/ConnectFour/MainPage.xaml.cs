@@ -155,8 +155,8 @@ namespace ConnectFour
 
         private void CollectData(object sender, TappedRoutedEventArgs e)
         {
-            int playGames = 300;
-            int saveRate = 300;
+            int playGames = 2000;
+            int saveRate = 2000;
 
             Stopwatch timer = new Stopwatch();
             timer.Start();
@@ -170,21 +170,26 @@ namespace ConnectFour
             timer.Stop();
             TimeSpan ts = timer.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
-            log.Text += "# Games: " + playGames.ToString() + "\n";
-            log.Text += "RunTime: " + elapsedTime + "\n";
             double gpms = ((ts.Hours * 60 * 60 * 1000) + (ts.Minutes * 60 * 1000) + (ts.Seconds * 1000) + (ts.Milliseconds)) / playGames;
-            log.Text += "Ms/game: " + gpms.ToString() + "\n\n";
+            string newLog = "# Games: " + playGames.ToString() + "\n" +
+                "RunTime: " + elapsedTime + "\n" +
+                "ms/game: " + gpms.ToString() + "\n\n";
+            log.Text = newLog + log.Text;
         }
 
         private void automate(bool writeData = false)
         {
-            theGame = new Board(true, true, 4, YellowSquare, writeData);
-            bool computerGoing = true;
-            do
+            try
             {
-                theGame.computeChoice(computerGoing);
-                computerGoing = !computerGoing;
-            } while (!(theGame.checkComputerWin() || theGame.checkComputerWin(false) || theGame.checkCats()));
+                theGame = new Board(true, true, 4, YellowSquare, writeData);
+                bool computerGoing = true;
+                do
+                {
+                    theGame.computeChoice(computerGoing);
+                    computerGoing = !computerGoing;
+                } while (!(theGame.checkComputerWin() || theGame.checkComputerWin(false) || theGame.checkCats()));
+            }
+            catch { Exception ex = new Exception(); ex.ToString(); }
         }
 
         private void UndoLastMove(object sender, TappedRoutedEventArgs e)

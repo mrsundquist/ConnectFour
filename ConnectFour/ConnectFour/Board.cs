@@ -129,7 +129,7 @@ namespace ConnectFour
             else
             {
                 if (color == Checker.red) checkerColor = new SolidColorBrush(Colors.IndianRed);
-                else checkerColor = new SolidColorBrush(Colors.DimGray);
+                else checkerColor = new SolidColorBrush(Color.FromArgb(255, 13, 0, 97));
             }
 
             //find the current checker

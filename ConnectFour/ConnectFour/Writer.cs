@@ -28,8 +28,8 @@ namespace ConnectFour
 
             foreach (string record in theData)
             {
-                Writer.outputStream.Write(record);
-                Writer.outputStream.WriteLine();
+                    Writer.outputStream.Write(record);
+                    Writer.outputStream.WriteLine();
             }
         }
 
