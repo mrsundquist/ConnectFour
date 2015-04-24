@@ -40,8 +40,7 @@ namespace ConnectFour
             string state;
             stateData record = new stateData();
 
-            Writer.input = await Writer.folder.OpenStreamForReadAsync("ConnectFourData01");
-            //will need to change to all!
+            Writer.input = await Writer.folder.OpenStreamForReadAsync("ConnectFourDataAll.txt");
             Writer.inputStream = new StreamReader(input);
             
 

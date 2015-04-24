@@ -19,6 +19,7 @@ namespace ConnectFour
         {
             this.InitializeComponent();
             theGame = new Board(true, true, 0, YellowSquare); // load data on first created board
+            Options.IsOpen = true;
         }
 
         Board theGame;
@@ -49,6 +50,7 @@ namespace ConnectFour
 
         private void hideOptions()
         {
+            Options.IsOpen = false;
             Labels.Opacity = 100;
             ChooseA.IsEnabled = true;
             ChooseB.IsEnabled = true;
@@ -61,6 +63,7 @@ namespace ConnectFour
 
         private void unhideOptions()
         {
+            Options.IsOpen = true;
             Labels.Opacity = 25;
             ChooseA.IsEnabled = false;
             ChooseB.IsEnabled = false;

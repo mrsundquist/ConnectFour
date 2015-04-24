@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Page.TopAppBar>
-        <AppBar Height="100">
+        <AppBar x:Name="Options" Height="100">
             <Grid Height="100">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="869*"/>
@@ -17,7 +17,7 @@
                     <ToggleSwitch x:Name="GodMode" Header="Two Player" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200" Margin="0" Height="100" VerticalContentAlignment="Top"/>
                     <ToggleSwitch x:Name="FirstPlayer" Header="First Player" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="100" OffContent="Computer" OnContent="Player" Width="200" Margin="0"/>
                     <ToggleSwitch x:Name="ComputerColor" Header="Computer Color" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="200" Height="100" OffContent="Black" OnContent="Red" Margin="0"/>
-                    <Slider x:Name="Difficulty" Width="200" Maximum="5" LargeChange="1" Header="Difficulty" Height="100" Value="5" Margin="0"/>
+                    <Slider x:Name="Difficulty" Width="250" Maximum="5" LargeChange="1" Header="Difficulty" Height="100" Value="5" Margin="0"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal" Width="497">
                     <AppBarButton x:Name="Start" HorizontalAlignment="Stretch" Icon="Play" Label="Start" VerticalAlignment="Stretch" Width="100" Height="100" Tapped="StartGame" Margin="0"/>
